@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import useLoginUser from "../../hooks/auth/use-login-user";
 import SimpleForm from "../../shared-components/fields/SimpleForm";
 
@@ -12,6 +12,7 @@ const LoginPage = () => {
     });
     const finalData = {
       ...newValue.reduce((acc, item) => ({ ...acc, ...item })),
+      isMobile: false,
     };
     setInput(finalData);
   };
@@ -19,6 +20,9 @@ const LoginPage = () => {
     { textLabel: "Username", type: "text", name: "username" },
     { textLabel: "Password", type: "password", name: "password" },
   ];
+
+  useEffect(() => {}, [input]);
+
   return (
     <div className="container">
       <div className="row justify-content-center align-items-center vh-100">

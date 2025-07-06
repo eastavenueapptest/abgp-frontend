@@ -16,8 +16,6 @@ const AuthProvider = ({ children }) => {
     error: sessionError,
   } = useGetSession();
 
-  console.log(user);
-
   const [sessionErrorState, setSessionErrorState] = useState(sessionError);
   useEffect(() => {
     setSessionErrorState(sessionError);

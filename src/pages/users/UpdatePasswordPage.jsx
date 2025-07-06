@@ -40,7 +40,7 @@ const UpdatePasswordPage = () => {
   }
   const handleSubmit = async () => {
     try {
-      // console.log(selectedId, newPassword);
+      console.log(selectedId, newPassword);
       await changePassword(selectedId, { password: newPassword });
       if (cpError) {
         console.error(`Error: ${cpError}`);
@@ -68,7 +68,7 @@ const UpdatePasswordPage = () => {
               onChange={handleChange}
             >
               {users
-                ?.filter((item) => item.position_id !== 5)
+                ?.filter((item) => item.position_id != 5)
                 ?.map((user, index) => {
                   return (
                     <MenuItem key={index} value={user?.id}>

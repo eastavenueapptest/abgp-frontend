@@ -33,7 +33,6 @@ export const useLoginUser = (requestBody) => {
           throw new Error("Failed to Login Account");
         }
         const result = await response.json();
-        // console.log(result);
         sessionStorage.setItem("user", JSON.stringify(result.data));
         toast.success("User is now Logged in");
         setData(result);

@@ -6,20 +6,8 @@ const useGetSession = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const fetchData = async () => {
-    console.log(server);
     try {
-      // const response = await fetch(`${server}/api/users/session`, {
-      //   credentials: "include",
-      // });
-
-      // if (!response.ok) {
-      //   throw new Error("Failed to fetch session");
-      // }
-
-      // const result = await response.json();
-      // console.log("result: ", result);
       const user = sessionStorage.getItem("user");
-      console.log(user.id);
       setData({ user: JSON.parse(user) });
     } catch (error) {
       setError(error.message);
