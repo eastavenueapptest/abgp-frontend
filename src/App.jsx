@@ -3,7 +3,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
 import { useEffect, useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import OverviewPage from "./pages/dashboard/OverviewPage";
@@ -163,7 +163,7 @@ const App = () => {
           />
         </Route>
       </Route>
-
+      <Route path="/login" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="*" element={<Error404Page />} />
     </Routes>
