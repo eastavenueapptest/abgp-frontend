@@ -163,7 +163,7 @@ const App = () => {
           />
         </Route>
       </Route>
-      <Route path="/login" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="*" element={<Error404Page />} />
     </Routes>
