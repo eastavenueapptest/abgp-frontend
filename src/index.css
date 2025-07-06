@@ -1,0 +1,32 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+.status-on-process {
+  color: orange !important;
+  background-color: rgb(252, 217, 148) !important;
+}
+.status-for-review {
+  color: rgb(120, 60, 169);
+  background-color: rgb(205, 193, 255);
+}
+.status-completed {
+  color: green;
+  background-color: rgb(148, 252, 163);
+}
+.status-pending {
+  color: gray;
+  background-color: rgb(236, 232, 232);
+}
+.MuiBox-root.css-k0sogd {
+  margin: 0px !important;
+}
