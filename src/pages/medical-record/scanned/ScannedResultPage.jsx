@@ -16,9 +16,12 @@ const ScannedResultPage = () => {
   const [input, setInput] = useState(null);
   const [result, setResult] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const createMedicalResult = useCreateMedicalResult();
 
   useEffect(() => {
-    useCreateMedicalResult(input);
+    if (input) {
+      createMedicalResult(input);
+    }
   }, [input]);
   const patientName = useMemo(() => {
     return requests
