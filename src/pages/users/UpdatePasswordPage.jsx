@@ -13,13 +13,13 @@ import useChangePassword from "../../hooks/users/use-change-password";
 import useGetUsers from "../../hooks/users/use-get-users";
 
 const UpdatePasswordPage = () => {
-  const { data: users, isLoading } = useGetUsers();
+  const { data: users } = useGetUsers();
   const [selectedId, setSelectedId] = useState("");
   const [newPassword, setNewpassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const {
     changePassword,
-    data,
+
     isLoading: cpIsLoading,
     error: cpError,
   } = useChangePassword(selectedId, newPassword);

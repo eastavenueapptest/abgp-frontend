@@ -24,8 +24,7 @@ const ViewUserPage = () => {
   const handleSubmit = (formData) => {
     editUser(id, formData);
   };
-  const { data: position, isLoading: isJobPositionsLoading } =
-    useGetPositions();
+  const { data: position } = useGetPositions();
 
   const jobOptions = position.map(({ id, type }) => {
     return { id, label: type, value: id };

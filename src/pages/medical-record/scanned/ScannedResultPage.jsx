@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import imagePlaceholder from "../../../assets/images/placeholders/image.jpg";
 import CreateScannedRecordField from "../../../features/medical-record/CreateScannedRecordField";
-import useGetSession from "../../../hooks/auth/use-session-user";
 import { useAuthContext } from "../../../hooks/context/AuthContext";
 import useCreateMedicalResult from "../../../hooks/medical-record/use-create-medical-result";
 import useGetMedicalRequest from "../../../hooks/medical-record/use-get-medical-requests";
@@ -10,7 +9,6 @@ import SimpleAutoCompleteInput from "../../../shared-components/fields/SimpleAut
 
 const ScannedResultPage = () => {
   const { data: requests, isLoading } = useGetMedicalRequest();
-  const { data: session } = useGetSession();
   const { isProcessing, ocrResult, handleOCR } = useOCR();
 
   const [image, setImage] = useState(null);
@@ -19,15 +17,12 @@ const ScannedResultPage = () => {
   const [result, setResult] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const {
-    data,
-    isLoading: isRequestLoading,
-    error,
-  } = useCreateMedicalResult(input);
-
+  useEffect(() => {
+    useCreateMedicalResult(input);
+  }, [input]);
   const patientName = useMemo(() => {
     return requests
-      ?.filter((item) => item.status == 0)
+      ?.filter((item) => item.status === 0)
       .map(({ id, patient_name }) => ({
         id,
         patient_name,

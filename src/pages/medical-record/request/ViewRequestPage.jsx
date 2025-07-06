@@ -7,8 +7,7 @@ import SimpleViewForm from "../../../shared-components/fields/SimpleViewForm";
 
 const ViewRequestPage = () => {
   const { id } = useParams();
-  const { data: physicians, isLoading: isDoctorsLoading } =
-    useGetPhysicianDoctor();
+  const { data: physicians } = useGetPhysicianDoctor();
 
   const { editRequest, isLoading: isEditRequestLoading } =
     useEditMedicalRequest();
