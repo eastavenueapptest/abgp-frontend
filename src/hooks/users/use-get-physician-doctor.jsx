@@ -25,7 +25,7 @@ const useGetPhysicianDoctor = () => {
     };
 
     fetchData();
-  }, []);
+  }, [server]);
   return { data, isLoading, error };
 };
 

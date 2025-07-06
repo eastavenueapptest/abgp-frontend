@@ -25,7 +25,7 @@ const useGetUser = (userId) => {
     };
 
     fetchRequest();
-  }, [userId]);
+  }, [userId, server]);
 
   return { data, isLoading, error };
 };

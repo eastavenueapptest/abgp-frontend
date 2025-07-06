@@ -22,7 +22,7 @@ const useGetUsers = () => {
     };
 
     fetchData();
-  }, []);
+  }, [server]);
   return { data, isLoading, error };
 };
 
