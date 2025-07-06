@@ -5,33 +5,45 @@ const useGetSession = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const fetchData = async () => {
-    console.log(server);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      console.log(server);
+      try {
+        // Simulating session fetch from storage
+        const user = sessionStorage.getItem("user");
+        if (user) {
+          setData({ user: JSON.parse(user) });
+        } else {
+          throw new Error("No session found");
+        }
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [server]);
+
+  // If you still want to expose a manual refresh
+  const refresh = async () => {
     try {
-      // const response = await fetch(`${server}/api/users/session`, {
-      //   credentials: "include",
-      // });
-
-      // if (!response.ok) {
-      //   throw new Error("Failed to fetch session");
-      // }
-
-      // const result = await response.json();
-      // console.log("result: ", result);
       const user = sessionStorage.getItem("user");
-      console.log(user.id);
-      setData({ user: JSON.parse(user) });
+      if (user) {
+        setData({ user: JSON.parse(user) });
+      } else {
+        throw new Error("No session found");
+      }
     } catch (error) {
       setError(error.message);
     } finally {
       setIsLoading(false);
     }
   };
-  useEffect(() => {
-    fetchData();
-  }, []);
 
-  return { data, isLoading, refresh: fetchData, error };
+  return { data, isLoading, refresh, error };
 };
 
 export default useGetSession;

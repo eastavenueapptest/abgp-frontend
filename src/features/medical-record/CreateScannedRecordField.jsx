@@ -44,16 +44,15 @@ const CreateScannedRecordField = ({ data, onSubmit }) => {
       );
     }
   };
-
   useEffect(() => {
     assignValuesToFields();
-  }, [data]);
+  }, [assignValuesToFields]);
 
   useEffect(() => {
     if (fields.length > 0) {
       onSubmit(fields);
     }
-  }, [fields]);
+  }, [fields, onSubmit]);
 
   const handleFieldChange = (index, value) => {
     setFields((prevFields) =>
