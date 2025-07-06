@@ -1,0 +1,25 @@
+import { useEffect, useState } from "react";
+
+const useGetSession = () => {
+  const server = process.env.REACT_APP_SERVER;
+  const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const fetchData = async () => {
+    try {
+      const user = sessionStorage.getItem("user");
+      setData({ user: JSON.parse(user) });
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  return { data, isLoading, refresh: fetchData, error };
+};
+
+export default useGetSession;
