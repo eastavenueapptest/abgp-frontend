@@ -97,15 +97,19 @@ const ABGFormPage = () => {
     // Optional: let the user close it manually if you comment this out
     printWindow.close();
   };
+
+  useEffect(() => {
+    if (selectedResultId && selectedEmployee) {
+      setInput({
+        id: selectedResultId,
+        interpreted_by: selectedEmployee?.employee_name,
+      });
+    }
+  }, [selectedResultId, selectedEmployee]);
+
   const handleSendEmail = () => {
-    setInput({
-      id: selectedResultId,
-      interpreted_by: selectedEmployee?.employee_name,
-    });
     sendEmail(input);
-    console.log(input);
   };
-  console.log(selectedResultId, selectedEmployee?.employee_name);
   useEffect(() => {
     if (specificResultQuery) {
       setFields(JSON.parse(specificResultQuery?.extracted_text));
