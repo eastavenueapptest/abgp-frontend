@@ -46,9 +46,6 @@ const ResultForm = ({ defaultValues }) => {
       "metabolic alkalosis partially-compensated moderate2 ."
       ". . fully-compensated severe2 ."
       ".  mixed mixed mixed ."
-
-
-
     `,
   };
 
@@ -132,7 +129,7 @@ const ResultForm = ({ defaultValues }) => {
 
   useEffect(() => {}, [defaultValues]);
   return (
-    <div style={formStyle}>
+    <div style={formStyle} className="abg-form-result">
       <div style={headerStyle}>
         <div
           style={{
@@ -229,17 +226,18 @@ const ResultForm = ({ defaultValues }) => {
           <div style={{ width: "200px" }}>
             <label style={{ marginBottom: "1.5em" }}>{item.label}</label>
             <br />
-            <label
+            <p
               style={{
                 width: "100%",
                 border: "none",
                 borderBottom: "1px solid black",
                 outline: "none",
                 height: "12px",
+                marginBottom: "5px",
               }}
             >
               {item.value || ""}
-            </label>
+            </p>
             <label>{item.subLabel}</label>
           </div>
         ))}
