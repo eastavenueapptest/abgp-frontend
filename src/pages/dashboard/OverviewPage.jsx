@@ -1,4 +1,4 @@
 const OverviewPage = () => {
-  return <>...</>;
+  return <>Census Table</>;
 };
 export default OverviewPage;
