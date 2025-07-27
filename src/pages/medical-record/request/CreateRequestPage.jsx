@@ -23,7 +23,7 @@ const CreateRequestPage = () => {
         { id: 2, label: "Female", value: "F" },
       ],
     },
-    { textLabel: "Diagnosis", type: "text", name: "diagnosis" },
+    { textLabel: "Diagnosis", type: "text", name: "diagnosis", maxLength: 20 },
     {
       textLabel: "Assign Physician",
       type: "dropdown",

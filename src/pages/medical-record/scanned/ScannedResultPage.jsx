@@ -149,7 +149,7 @@ const ScannedResultPage = () => {
           <div className="flex-shrink-1">
             <button
               className="btn btn-primary"
-              disabled={!result}
+              disabled={!result || !selectedPatient}
               onClick={handleSubmit}
             >
               Approve Result

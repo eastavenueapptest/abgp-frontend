@@ -42,6 +42,9 @@ const SimpleForm = ({ onSubmit, items, title, isLoading, returnTo }) => {
               fullWidth
               label={item.textLabel}
               type={item.type}
+              slotProps={{
+                htmlInput: { maxLength: 30 },
+              }}
               sx={{ mr: 1 }}
               value={formData[index]}
               onChange={(e) => handleChange(index, e.target.value)}
