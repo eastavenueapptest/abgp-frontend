@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+const server = process.env.REACT_APP_SERVER;
 
 const useGetMedicalResult = (resultId) => {
-  const server = process.env.REACT_APP_SERVER;
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -27,7 +27,7 @@ const useGetMedicalResult = (resultId) => {
     };
 
     fetchRequest();
-  }, [resultId, server]);
+  }, [resultId]);
 
   return { data, isLoading, error };
 };
