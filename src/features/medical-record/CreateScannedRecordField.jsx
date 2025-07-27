@@ -54,7 +54,7 @@ const CreateScannedRecordField = ({ data, onSubmit }) => {
     if (fields.length > 0) {
       onSubmit(fields);
     }
-  }, [fields]);
+  }, [fields, onSubmit]);
 
   const handleFieldChange = (index, value) => {
     setFields((prevFields) =>

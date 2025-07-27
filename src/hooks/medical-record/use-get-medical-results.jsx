@@ -23,7 +23,7 @@ const useGetMedicalResults = () => {
     };
 
     fetchData();
-  }, []);
+  }, [server]);
   return { data, isLoading, error };
 };
 
