@@ -7,11 +7,10 @@ const useCreateUser = (requestBody) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const server = process.env.REACT_APP_SERVER;
 
   useEffect(() => {
     const createRequest = async () => {
-      const server = process.env.REACT_APP_SERVER;
-
       try {
         setIsLoading(true);
         const formattedData = JSON.stringify(

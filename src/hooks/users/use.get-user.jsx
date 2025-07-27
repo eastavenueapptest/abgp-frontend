@@ -4,10 +4,10 @@ const useGetUser = (userId) => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const server = process.env.REACT_APP_SERVER;
 
   useEffect(() => {
     if (!userId) return;
-    const server = process.env.REACT_APP_SERVER;
 
     const fetchRequest = async () => {
       try {
