@@ -64,7 +64,7 @@ const App = () => {
     };
 
     updateVisibility();
-  }, [session]);
+  }, [session, pages]);
 
   if (isSessionLoading) {
     return <LoadingScreen />;
