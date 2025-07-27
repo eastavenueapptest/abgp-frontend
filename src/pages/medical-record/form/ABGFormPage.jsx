@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import useCreateEmail from "../../../hooks/email/use-create-email";
 import useGetMedicalResult from "../../../hooks/medical-record/use-get-medical-result";
 import useGetMedicalResults from "../../../hooks/medical-record/use-get-medical-results";
@@ -41,12 +41,9 @@ const ABGFormPage = () => {
     );
   }, [resultsQuery, selectedPatient]);
 
-  const handlePreviewForm = useCallback(
-    (id) => {
-      setSelectedResultId(id);
-    },
-    [selectedResultId]
-  );
+  const handlePreviewForm = (id) => {
+    setSelectedResultId(id);
+  };
 
   const handlePrint = () => {
     const printContents = resultFormRef.current.innerHTML;
@@ -205,7 +202,6 @@ const ABGFormPage = () => {
                   po2: fields?.PO2,
                   hco3: fields?.HC03,
                   be: fields?.BE,
-                  hco3: fields?.HCO3,
                   sao2: fields?.SO2,
                   ctco2: fields?.TCO2,
                   interpreted_by: selectedEmployee?.employee_name,

@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
 const useGetUser = (userId) => {
-  const server = process.env.REACT_APP_SERVER;
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     if (!userId) return;
+    const server = process.env.REACT_APP_SERVER;
 
     const fetchRequest = async () => {
       try {
@@ -25,7 +25,7 @@ const useGetUser = (userId) => {
     };
 
     fetchRequest();
-  }, [userId]);
+  }, [userId, server]);
 
   return { data, isLoading, error };
 };

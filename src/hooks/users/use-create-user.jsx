@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const useCreateUser = (requestBody) => {
-  const server = process.env.REACT_APP_SERVER;
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -11,6 +10,8 @@ const useCreateUser = (requestBody) => {
 
   useEffect(() => {
     const createRequest = async () => {
+      const server = process.env.REACT_APP_SERVER;
+
       try {
         setIsLoading(true);
         const formattedData = JSON.stringify(
@@ -48,7 +49,7 @@ const useCreateUser = (requestBody) => {
     ) {
       createRequest();
     }
-  }, [requestBody]);
+  }, [requestBody, server, navigate]);
 
   return { data, isLoading, error };
 };

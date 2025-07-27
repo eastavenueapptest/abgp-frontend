@@ -13,13 +13,12 @@ import useChangePassword from "../../hooks/users/use-change-password";
 import useGetUsers from "../../hooks/users/use-get-users";
 
 const UpdatePasswordPage = () => {
-  const { data: users, isLoading } = useGetUsers();
+  const { data: users } = useGetUsers();
   const [selectedId, setSelectedId] = useState("");
   const [newPassword, setNewpassword] = useState("");
   const [checkPassword, setCheckPassword] = useState("");
   const {
     changePassword,
-    data,
     isLoading: cpIsLoading,
     error: cpError,
   } = useChangePassword(selectedId, newPassword);
@@ -68,7 +67,7 @@ const UpdatePasswordPage = () => {
               onChange={handleChange}
             >
               {users
-                ?.filter((item) => item.position_id != 5)
+                ?.filter((item) => item.position_id !== 5)
                 ?.map((user, index) => {
                   return (
                     <MenuItem key={index} value={user?.id}>

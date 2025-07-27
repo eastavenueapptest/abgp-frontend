@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import imagePlaceholder from "../../../assets/images/placeholders/image.jpg";
 import CreateScannedRecordField from "../../../features/medical-record/CreateScannedRecordField";
-import useGetSession from "../../../hooks/auth/use-session-user";
 import { useAuthContext } from "../../../hooks/context/AuthContext";
 import useCreateMedicalResult from "../../../hooks/medical-record/use-create-medical-result";
 import useGetMedicalRequest from "../../../hooks/medical-record/use-get-medical-requests";
@@ -10,7 +9,6 @@ import SimpleAutoCompleteInput from "../../../shared-components/fields/SimpleAut
 
 const ScannedResultPage = () => {
   const { data: requests, isLoading } = useGetMedicalRequest();
-  const { data: session } = useGetSession();
   const { isProcessing, ocrResult, handleOCR } = useOCR();
 
   const [image, setImage] = useState(null);
@@ -19,11 +17,7 @@ const ScannedResultPage = () => {
   const [result, setResult] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
 
-  const {
-    data,
-    isLoading: isRequestLoading,
-    error,
-  } = useCreateMedicalResult(input);
+  const { isLoading: isRequestLoading } = useCreateMedicalResult(input);
 
   const patientName = useMemo(() => {
     return requests
@@ -149,10 +143,12 @@ const ScannedResultPage = () => {
           <div className="flex-shrink-1">
             <button
               className="btn btn-primary"
-              disabled={!result || !selectedPatient}
+              disabled={!result || !selectedPatient || isRequestLoading}
               onClick={handleSubmit}
             >
               Approve Result
+              {/* ALTER TABLE results MODIFY extracted_text LONGTEXT;
+               */}
             </button>
           </div>
         </div>

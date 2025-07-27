@@ -139,7 +139,7 @@ const ResultForm = ({ defaultValues }) => {
           }}
         >
           <div>
-            <img src={dohLogo} style={imageStyle} />
+            <img src={dohLogo} style={imageStyle} alt="doh-logo" />
           </div>
           <div>
             <strong>Republic of the Philippines</strong>
@@ -156,7 +156,7 @@ const ResultForm = ({ defaultValues }) => {
             </strong>
           </div>
           <div>
-            <img src={eastAveLogo} style={imageStyle} />
+            <img src={eastAveLogo} style={imageStyle} alt="east-ave-logo" />
           </div>
         </div>
       </div>

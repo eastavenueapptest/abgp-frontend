@@ -8,7 +8,7 @@ const CreateUsertPage = () => {
   const { data: session } = useGetSession();
   const [input, setInput] = useState(null);
   const { data: positions, isLoading: isPositionLoading } = useGetPositions();
-  const { isLoading: isUsersLoading, error } = useCreateUser(input);
+  const { isLoading: isUsersLoading } = useCreateUser(input);
   const items = [
     { textLabel: "Employee Name", type: "text", name: "employeeName" },
     { textLabel: "Employee Number", type: "number", name: "employeeNumber" },
