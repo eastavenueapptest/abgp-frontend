@@ -2,7 +2,7 @@ import { Dashboard, Person } from "@mui/icons-material";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
@@ -27,28 +27,31 @@ import UpdatePasswordPage from "./pages/users/UpdatePasswordPage";
 import ViewUserPage from "./pages/users/ViewUserPage";
 
 const App = () => {
-  const pages = [
-    { kind: "header", title: "Main items" },
-    { segment: "dashboard", title: "Dashboard", icon: <Dashboard /> },
-    { segment: "users", title: "Users", icon: <Person /> },
-    { kind: "divider" },
-    { kind: "header", title: "Features" },
-    {
-      segment: "medical-records",
-      title: "Medical Record",
-      icon: <BarChartIcon />,
-      children: [
-        { segment: "request", title: "Request", icon: <DescriptionIcon /> },
-        {
-          segment: "scanned-result",
-          title: "Scanned Result",
-          icon: <DescriptionIcon />,
-        },
-        { segment: "abg-form", title: "ABG Form", icon: <DescriptionIcon /> },
-      ],
-    },
-    { segment: "census", title: "Census", icon: <LayersIcon /> },
-  ];
+  const pages = useMemo(
+    () => [
+      { kind: "header", title: "Main items" },
+      { segment: "dashboard", title: "Dashboard", icon: <Dashboard /> },
+      { segment: "users", title: "Users", icon: <Person /> },
+      { kind: "divider" },
+      { kind: "header", title: "Features" },
+      {
+        segment: "medical-records",
+        title: "Medical Record",
+        icon: <BarChartIcon />,
+        children: [
+          { segment: "request", title: "Request", icon: <DescriptionIcon /> },
+          {
+            segment: "scanned-result",
+            title: "Scanned Result",
+            icon: <DescriptionIcon />,
+          },
+          { segment: "abg-form", title: "ABG Form", icon: <DescriptionIcon /> },
+        ],
+      },
+      { segment: "census", title: "Census", icon: <LayersIcon /> },
+    ],
+    []
+  );
   const { user: session, isSessionLoading } = useAuthContext();
   const [visiblePages, setVisiblePages] = useState();
 

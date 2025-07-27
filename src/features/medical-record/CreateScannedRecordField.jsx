@@ -1,5 +1,5 @@
 import TextField from "@mui/material/TextField";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const CreateScannedRecordField = ({ data, onSubmit }) => {
   const [fields, setFields] = useState([
@@ -18,7 +18,8 @@ const CreateScannedRecordField = ({ data, onSubmit }) => {
       .filter((word) => !isNaN(word) && word.trim() !== "");
     return parts.length > 0 ? Number(parts[0]) : "-";
   };
-  const assignValuesToFields = () => {
+
+  const assignValuesToFields = useCallback(() => {
     if (data && data.length > 0) {
       setFields((prevFields) =>
         prevFields.map((field) => {
@@ -43,11 +44,11 @@ const CreateScannedRecordField = ({ data, onSubmit }) => {
         })
       );
     }
-  };
+  }, [data]);
 
   useEffect(() => {
     assignValuesToFields();
-  }, [data, assignValuesToFields]);
+  }, [assignValuesToFields]);
 
   useEffect(() => {
     if (fields.length > 0) {
