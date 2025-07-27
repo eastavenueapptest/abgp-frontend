@@ -54,7 +54,7 @@ export const useLoginUser = (requestBody) => {
     ) {
       inputResult();
     }
-  }, [requestBody, refresh]); // Add refresh as a dependency
+  }, [requestBody, refresh, navigate, server]); // Add refresh as a dependency
 
   return { data, isLoading, error };
 };

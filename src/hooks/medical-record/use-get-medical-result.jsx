@@ -27,7 +27,7 @@ const useGetMedicalResult = (resultId) => {
     };
 
     fetchRequest();
-  }, [resultId]);
+  }, [resultId, server]);
 
   return { data, isLoading, error };
 };

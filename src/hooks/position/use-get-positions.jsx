@@ -22,7 +22,7 @@ const useGetPositions = () => {
     };
 
     fetchData();
-  }, []);
+  }, [server]);
   return { data, isLoading, error };
 };
 

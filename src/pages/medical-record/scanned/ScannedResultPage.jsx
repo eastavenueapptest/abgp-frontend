@@ -21,7 +21,7 @@ const ScannedResultPage = () => {
 
   const patientName = useMemo(() => {
     return requests
-      ?.filter((item) => item.status == 0)
+      ?.filter((item) => item.status === 0)
       .map(({ id, patient_name }) => ({
         id,
         patient_name,
@@ -52,6 +52,7 @@ const ScannedResultPage = () => {
       rtId: employee?.id,
       extractedText: abgFields,
     });
+    handleClear();
   };
 
   const handleClear = () => {
@@ -143,7 +144,7 @@ const ScannedResultPage = () => {
           <div className="flex-shrink-1">
             <button
               className="btn btn-primary"
-              disabled={!result || !selectedPatient || isRequestLoading}
+              disabled={result?.length === 0 || !selectedPatient?.id}
               onClick={handleSubmit}
             >
               Approve Result
@@ -153,7 +154,7 @@ const ScannedResultPage = () => {
           </div>
         </div>
 
-        {result.length > 0 && (
+        {result.length > 0 && !isRequestLoading && (
           <div className="border p-3 mb-3">
             <h3>OCR Result:</h3>
             <CreateScannedRecordField

@@ -48,7 +48,7 @@ const useCreateMedicalRequest = (requestBody) => {
     ) {
       createRequest();
     }
-  }, [requestBody]);
+  }, [requestBody, server]);
 
   return { data, isLoading, error };
 };

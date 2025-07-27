@@ -47,7 +47,7 @@ const CreateScannedRecordField = ({ data, onSubmit }) => {
 
   useEffect(() => {
     assignValuesToFields();
-  }, [data]);
+  }, [data, assignValuesToFields]);
 
   useEffect(() => {
     if (fields.length > 0) {
