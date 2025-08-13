@@ -52,12 +52,12 @@ const SimpleForm = ({ onSubmit, items, title, isLoading, returnTo }) => {
           )}
         </div>
       ))}
-      <div className="col-12">
+      <div className="col-12 p-0">
         {returnTo && (
           <Button
             component={Link}
             to={`../${returnTo}`}
-            variant="contained"
+            variant="outlined"
             sx={{ textTransform: "capitalize", mr: 2 }}
           >
             Back

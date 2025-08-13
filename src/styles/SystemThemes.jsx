@@ -13,7 +13,10 @@ const SystemThemes = createTheme({
   palette: {
     mode: "light",
     primary: {
-      main: "#1976d2",
+      main: "#3e8841",
+      "&:hover": {
+        backgroundColor: "#2c652e",
+      },
     },
     secondary: {
       main: "#d32f2f",

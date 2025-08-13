@@ -83,15 +83,26 @@ const SimpleForm = ({
       ))}
 
       <div className="col-12 p-0">
+        {returnTo && (
+          <Button
+            component={Link}
+            to={`../${returnTo}`}
+            variant="contained"
+            sx={{ textTransform: "capitalize", mr: 2 }}
+          >
+            Back
+          </Button>
+        )}
         <Button
-          component={Link}
-          to={`../${returnTo}`}
+          type="submit"
           variant="contained"
-          sx={{ textTransform: "capitalize", mr: 2 }}
+          disabled={isLoading}
+          sx={{
+            textTransform: "capitalize",
+            backgroundColor: "green",
+            "&:hover": { backgroundColor: "darkgreen" },
+          }}
         >
-          Back
-        </Button>
-        <Button type="submit" variant="contained" disabled={isLoading}>
           {isLoading ? (
             <>
               <CircularProgress size={18} sx={{ mr: 1 }} /> Processing...

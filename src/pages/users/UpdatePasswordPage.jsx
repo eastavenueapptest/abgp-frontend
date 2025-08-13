@@ -94,11 +94,11 @@ const UpdatePasswordPage = () => {
               onChange={handleCheckPassword}
             />
 
-            <div className="d-flex justify-content-end gap-1">
+            <div className="d-flex justify-content-start gap-1">
               <Button
                 component={Link}
                 to={`../../users`}
-                variant="contained"
+                variant="outlined"
                 sx={{ textTransform: "capitalize" }}
               >
                 Back

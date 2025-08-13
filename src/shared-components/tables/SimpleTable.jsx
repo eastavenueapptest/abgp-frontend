@@ -54,11 +54,13 @@ function EnhancedTableHead({
             key={column.id}
             align={column.numeric ? "right" : "left"}
             padding="normal"
-            sortDirection={orderBy === column.id ? order : false}>
+            sortDirection={orderBy === column.id ? order : false}
+          >
             <TableSortLabel
               active={orderBy === column.id}
               direction={orderBy === column.id ? order : "asc"}
-              onClick={createSortHandler(column.id)}>
+              onClick={createSortHandler(column.id)}
+            >
               {column.label}
               {orderBy === column.id && (
                 <Box component="span" sx={visuallyHidden}>
@@ -93,7 +95,8 @@ function EnhancedTableToolbar({
         alignItems: "center",
         flexWrap: "wrap",
         gap: 2,
-      }}>
+      }}
+    >
       <Typography variant="h6" id="tableTitle" component="div">
         {title}
       </Typography>
@@ -111,7 +114,8 @@ function EnhancedTableToolbar({
             component={Link}
             to={`${parentPath.pathname}/create`}
             variant="contained"
-            sx={{ textTransform: "capitalize" }}>
+            sx={{ textTransform: "capitalize" }}
+          >
             <AddIcon /> Create
           </Button>
         )}
@@ -121,7 +125,8 @@ function EnhancedTableToolbar({
             component={Link}
             to={`${parentPath.pathname}/update-password`}
             variant="contained"
-            sx={{ textTransform: "capitalize" }}>
+            sx={{ textTransform: "capitalize" }}
+          >
             <EditIcon /> Update password
           </Button>
         )}
@@ -213,7 +218,8 @@ export default function SimpleTable({
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
-            size="small">
+            size="small"
+          >
             <EnhancedTableHead
               columns={columns}
               order={order}
@@ -228,16 +234,18 @@ export default function SimpleTable({
                     <TableCell
                       key={column.id}
                       align={column.numeric ? "right" : "left"}
-                      sx={{ textTransform: "capitalize" }}>
+                      sx={{ textTransform: "capitalize" }}
+                    >
                       {row[column.id]}
                     </TableCell>
                   ))}
                   {enableRowAction && (
                     <TableCell>
                       <IconButton
-                        color="info"
+                        color="primary"
                         size="small"
-                        onClick={() => handleView(row.id)}>
+                        onClick={() => handleView(row.id)}
+                      >
                         <Visibility />
                       </IconButton>
                     </TableCell>

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import dohLogo from "../../../assets/images/brand/dohLogo.png";
 import eastAveLogo from "../../../assets/images/brand/eastAveLogo.png";
 const ResultForm = ({ defaultValues }) => {
@@ -127,7 +126,6 @@ const ResultForm = ({ defaultValues }) => {
     backgroundColor: "grey",
   };
 
-  useEffect(() => {}, [defaultValues]);
   return (
     <div style={formStyle} className="abg-form-result">
       <div style={headerStyle}>
@@ -180,7 +178,14 @@ const ResultForm = ({ defaultValues }) => {
       </div>
       <div style={contentStyle}>
         {fields?.map((item, index) => (
-          <div key={index} style={{ gridArea: item.gridName, ...fieldStyle }}>
+          <div
+            key={index}
+            style={{
+              gridArea: item.gridName,
+              ...fieldStyle,
+              marginTop: item.gridName === "mixed" ? "2em" : "4px",
+            }}
+          >
             {item.box && (
               <>
                 <div
@@ -192,15 +197,6 @@ const ResultForm = ({ defaultValues }) => {
 
             {!item.box && (
               <>
-                {item.label === "MIXED" && (
-                  <div
-                    style={{
-                      height: "15px",
-                      width: "10px",
-                      border: "1px solid",
-                    }}
-                  ></div>
-                )}
                 <label>{item.label}</label>
                 <label
                   style={{

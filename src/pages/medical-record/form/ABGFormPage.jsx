@@ -1,38 +1,61 @@
+import { Button } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useCreateEmail from "../../../hooks/email/use-create-email";
+import useEditMedicalResult from "../../../hooks/medical-record/use-edit-medical-result";
 import useGetMedicalResult from "../../../hooks/medical-record/use-get-medical-result";
 import useGetMedicalResults from "../../../hooks/medical-record/use-get-medical-results";
 import useGetPhysicianDoctor from "../../../hooks/users/use-get-physician-doctor";
 import SimpleAutoCompleteInput from "../../../shared-components/fields/SimpleAutoCompleteInput";
+import SimpleForm from "../../../shared-components/fields/SimpleViewForm";
+import SimpleModal from "../../../shared-components/modals/SimpleModal";
 import ResultForm from "../components/ResultForm";
 import StatusList from "../components/StatusList";
 
 const ABGFormPage = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [interpretationMessage, setInterpretationMessage] = useState(null);
+
   const [selectedResultId, setSelectedResultId] = useState(null);
   const [input, setInput] = useState(null);
   const [fields, setFields] = useState(null);
+  const [closeModal, setCloseModal] = useState(false);
   const resultFormRef = useRef();
   const { sendEmail } = useCreateEmail();
 
   const { data: resultsQuery, isLoading: resultIsLoading } =
     useGetMedicalResults();
-  const { data: userPhysicianQuery } = useGetPhysicianDoctor();
+  const { data: userPhysicianQuery, isLoading: isPhysicianDoctorLoading } =
+    useGetPhysicianDoctor();
   const { data: specificResultQuery, isLoading: specificResulIsLoading } =
     useGetMedicalResult(selectedResultId);
+
+  const { editMedicalResult, isLoading: isEditResultLoading } =
+    useEditMedicalResult(selectedResultId);
+
   const patientName = useMemo(() => {
     return resultsQuery
       ?.filter((item) => item.status > 0)
       .map(({ id, patient_name }) => ({ id, patient_name }));
   }, [resultsQuery]);
 
-  const employees = useMemo(() => {
+  const physicianOptions = useMemo(() => {
     return userPhysicianQuery?.map(({ id, employee_name }) => ({
       id,
-      employee_name,
+      label: employee_name,
+      value: employee_name,
     }));
   }, [userPhysicianQuery]);
+
+  const items = [
+    {
+      name: "interpreted_by",
+      label: "Interpreted by",
+      type: "autocomplete",
+      options: physicianOptions,
+    },
+    { name: "interpreted_message", label: "Interpreted message", type: "text" },
+  ];
 
   const filteredResults = useMemo(() => {
     if (!selectedPatient?.patient_name) return resultsQuery;
@@ -94,7 +117,10 @@ const ABGFormPage = () => {
     // Optional: let the user close it manually if you comment this out
     printWindow.close();
   };
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
   useEffect(() => {
     if (selectedResultId && selectedEmployee) {
       setInput({
@@ -107,6 +133,10 @@ const ABGFormPage = () => {
   const handleSendEmail = () => {
     sendEmail(input);
   };
+
+  const handleUpdateInterpretation = (formData) => {
+    editMedicalResult(selectedResultId, formData);
+  };
   useEffect(() => {
     if (specificResultQuery) {
       setFields(JSON.parse(specificResultQuery?.extracted_text));
@@ -115,7 +145,6 @@ const ABGFormPage = () => {
   if (resultIsLoading) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -131,6 +160,7 @@ const ABGFormPage = () => {
             getOptionLabel={(option) => option.patient_name}
           />
         </div>
+
         {filteredResults.length > 0 && (
           <div className="border p-3">
             <StatusList
@@ -148,32 +178,54 @@ const ABGFormPage = () => {
       <div className="col-lg-8 col-md-8 col-sm-12 col-12 border p-3">
         <div className="mb-3 d-flex align-items-center gap-3">
           <div className="flex-shrink-1">
-            <button
-              className="btn btn-primary"
+            <Button
+              variant="contained"
+              sx={{
+                textTransform: "capitalize",
+              }}
               disabled={specificResulIsLoading}
               onClick={handlePrint}
             >
               Print {specificResulIsLoading}
-            </button>
+            </Button>
           </div>
+
           <div className="flex-shrink-1">
-            <button
-              className="btn btn-primary"
-              disabled={specificResulIsLoading || selectedEmployee == null}
+            <Button
+              variant="contained"
+              sx={{
+                textTransform: "capitalize",
+              }}
+              disabled={specificResulIsLoading}
               onClick={handleSendEmail}
             >
               Email to Department{" "}
-            </button>
+            </Button>
           </div>
-        </div>
-        <div className=" mb-3 d-flex align-items-center gap-3">
-          <div className="flex-fill">
-            <SimpleAutoCompleteInput
-              data={employees}
-              label="Intepreted by"
-              value={selectedEmployee}
-              onChange={(event, newValue) => setSelectedEmployee(newValue)}
-              getOptionLabel={(option) => option.employee_name}
+
+          <div className="flex-shrink-1">
+            <SimpleModal
+              open={isModalOpen}
+              onOpen={handleOpenModal}
+              onClose={handleCloseModal}
+              body={
+                <div className="mb-3 px-3">
+                  <SimpleForm
+                    title={"Update Interpretation"}
+                    items={{
+                      interpreted_by: specificResultQuery?.interpreted_by,
+                      interpreted_message:
+                        specificResultQuery?.interpreted_message,
+                    }}
+                    onSubmit={(formData) => {
+                      handleUpdateInterpretation(formData);
+                      handleCloseModal();
+                    }}
+                    isLoading={isEditResultLoading || isPhysicianDoctorLoading}
+                    fields={items}
+                  />
+                </div>
+              }
             />
           </div>
         </div>
@@ -204,7 +256,12 @@ const ABGFormPage = () => {
                   be: fields?.BE,
                   sao2: fields?.SO2,
                   ctco2: fields?.TCO2,
-                  interpreted_by: selectedEmployee?.employee_name,
+                  interpreted_by:
+                    specificResultQuery?.interpreted_by ??
+                    selectedEmployee?.employee_name,
+                  mixed:
+                    specificResultQuery?.interpreted_message ??
+                    interpretationMessage,
                 }}
               />
             </div>
