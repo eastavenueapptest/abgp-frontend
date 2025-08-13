@@ -120,7 +120,7 @@ const ABGFormPage = () => {
   const handleCloseModal = () => setIsModalOpen(false);
 
   const handleSendEmail = () => {
-    sendEmail(selectedResultId);
+    sendEmail({ id: selectedResultId });
   };
 
   const handleUpdateInterpretation = (formData) => {
