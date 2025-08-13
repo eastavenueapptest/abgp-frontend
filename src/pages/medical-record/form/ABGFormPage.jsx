@@ -13,13 +13,9 @@ import StatusList from "../components/StatusList";
 
 const ABGFormPage = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [interpretationMessage, setInterpretationMessage] = useState(null);
 
   const [selectedResultId, setSelectedResultId] = useState(null);
-  const [input, setInput] = useState(null);
   const [fields, setFields] = useState(null);
-  const [closeModal, setCloseModal] = useState(false);
   const resultFormRef = useRef();
   const { sendEmail } = useCreateEmail();
 
@@ -65,6 +61,7 @@ const ABGFormPage = () => {
   }, [resultsQuery, selectedPatient]);
 
   const handlePreviewForm = (id) => {
+    console.log(id);
     setSelectedResultId(id);
   };
 
@@ -121,17 +118,9 @@ const ABGFormPage = () => {
 
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
-  useEffect(() => {
-    if (selectedResultId && selectedEmployee) {
-      setInput({
-        id: selectedResultId,
-        interpreted_by: selectedEmployee?.employee_name,
-      });
-    }
-  }, [selectedResultId, selectedEmployee]);
 
   const handleSendEmail = () => {
-    sendEmail(input);
+    sendEmail(selectedResultId);
   };
 
   const handleUpdateInterpretation = (formData) => {
@@ -162,7 +151,10 @@ const ABGFormPage = () => {
         </div>
 
         {filteredResults.length > 0 && (
-          <div className="border p-3">
+          <div
+            className="border p-3"
+            style={{ maxHeight: "50vh", overflowY: "auto" }}
+          >
             <StatusList
               onhandlePreview={handlePreviewForm}
               label={"patient_name"}
@@ -209,22 +201,27 @@ const ABGFormPage = () => {
               onOpen={handleOpenModal}
               onClose={handleCloseModal}
               body={
-                <div className="mb-3 px-3">
-                  <SimpleForm
-                    title={"Update Interpretation"}
-                    items={{
-                      interpreted_by: specificResultQuery?.interpreted_by,
-                      interpreted_message:
-                        specificResultQuery?.interpreted_message,
-                    }}
-                    onSubmit={(formData) => {
-                      handleUpdateInterpretation(formData);
-                      handleCloseModal();
-                    }}
-                    isLoading={isEditResultLoading || isPhysicianDoctorLoading}
-                    fields={items}
-                  />
-                </div>
+                !specificResulIsLoading &&
+                specificResultQuery && (
+                  <div className="mb-3 px-3">
+                    <SimpleForm
+                      subtitle={`Update patient ${specificResultQuery?.patient_name}'s result Interpretation`}
+                      fields={items}
+                      defaultValues={{
+                        interpreted_by: specificResultQuery?.interpreted_by,
+                        interpreted_message:
+                          specificResultQuery?.interpreted_message,
+                      }}
+                      onSubmit={(formData) => {
+                        handleUpdateInterpretation(formData);
+                        handleCloseModal();
+                      }}
+                      isLoading={
+                        isEditResultLoading || isPhysicianDoctorLoading
+                      }
+                    />
+                  </div>
+                )
               }
             />
           </div>
@@ -256,12 +253,8 @@ const ABGFormPage = () => {
                   be: fields?.BE,
                   sao2: fields?.SO2,
                   ctco2: fields?.TCO2,
-                  interpreted_by:
-                    specificResultQuery?.interpreted_by ??
-                    selectedEmployee?.employee_name,
-                  mixed:
-                    specificResultQuery?.interpreted_message ??
-                    interpretationMessage,
+                  interpreted_by: specificResultQuery?.interpreted_by,
+                  mixed: specificResultQuery?.interpreted_message,
                 }}
               />
             </div>

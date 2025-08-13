@@ -6,6 +6,7 @@ import SimpleAutoCompleteInput from "./SimpleAutoCompleteInput";
 
 const SimpleForm = ({
   title,
+  subtitle,
   items = [],
   isLoading = false,
   onSubmit,
@@ -37,7 +38,10 @@ const SimpleForm = ({
   return (
     <form className="row" onSubmit={handleSubmit}>
       <div className="d-flex justify-content-between align-items-center col-12 mb-3 p-0">
-        <Typography variant="h4">{title}</Typography>
+        <div>
+          {title && <Typography variant="h4">{title}</Typography>}
+          {subtitle && <Typography variant="p">{subtitle}</Typography>}
+        </div>
         {onDelete && (
           <Button
             type="button"

@@ -17,11 +17,12 @@ const StatusList = ({
       </ul>
     );
   }
+
   return (
     <ul className="list-group">
       {items?.map((item, index) => (
         <li key={index} className="border list-group-item mb-1 py-3">
-          <span onClick={() => onhandlePreview(item?.request_id)}>
+          <span onClick={() => onhandlePreview(item?.id)}>
             <div>
               <p>{item[label]}</p>
             </div>

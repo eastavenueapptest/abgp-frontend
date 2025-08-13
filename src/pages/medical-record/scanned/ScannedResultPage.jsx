@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import imagePlaceholder from "../../../assets/images/placeholders/image.jpg";
 import CreateScannedRecordField from "../../../features/medical-record/CreateScannedRecordField";
@@ -12,6 +13,8 @@ const ScannedResultPage = () => {
   const { isProcessing, ocrResult, handleOCR } = useOCR();
 
   const [image, setImage] = useState(null);
+  const [hasImage, setHasImage] = useState(false);
+
   const [scannedFields, setScannedFields] = useState(null);
   const [input, setInput] = useState(null);
   const [result, setResult] = useState([]);
@@ -36,6 +39,7 @@ const ScannedResultPage = () => {
         setImage(reader.result);
       };
       reader.readAsDataURL(file);
+      setHasImage(true);
     }
   };
 
@@ -52,12 +56,18 @@ const ScannedResultPage = () => {
       rtId: employee?.id,
       extractedText: abgFields,
     });
-    handleClear();
+
+    if (!isLoading) {
+      setTimeout(() => {
+        handleClear();
+      }, [2000]);
+    }
   };
 
   const handleClear = () => {
     setImage(null);
     setResult([]);
+    setHasImage(false);
     setScannedFields(null);
     setInput(null);
     setSelectedPatient(null);
@@ -73,7 +83,6 @@ const ScannedResultPage = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -103,27 +112,35 @@ const ScannedResultPage = () => {
             </div>
 
             <div className="d-flex gap-3 mt-3">
-              <button
-                className="btn btn-light border"
+              <Button
+                type="button"
+                variant="outlined"
                 disabled={!image && result.length === 0 && !selectedPatient}
                 onClick={handleClear}
               >
                 Clear
-              </button>
-              <button
+              </Button>
+              <Button
                 type="button"
-                className="btn btn-light border"
+                variant={hasImage ? "contained" : "outlined"}
+                sx={{
+                  textTransform: "capitalize",
+                }}
                 onClick={() => document.getElementById("imageInput").click()}
               >
                 Upload
-              </button>
-              <button
-                className="btn btn-primary"
+              </Button>
+              <Button
+                type="button"
+                variant="contained"
+                sx={{
+                  textTransform: "capitalize",
+                }}
                 disabled={isProcessing || !image}
                 onClick={() => handleOCR(image)}
               >
                 {isProcessing ? "Processing..." : "Scan Result"}
-              </button>
+              </Button>
             </div>
           </form>
         </div>
@@ -142,15 +159,19 @@ const ScannedResultPage = () => {
             />
           </div>
           <div className="flex-shrink-1">
-            <button
-              className="btn btn-primary"
+            <Button
+              type="button"
+              variant="contained"
               disabled={result?.length === 0 || !selectedPatient?.id}
               onClick={handleSubmit}
+              sx={{
+                textTransform: "capitalize",
+              }}
             >
               Approve Result
               {/* ALTER TABLE results MODIFY extracted_text LONGTEXT;
                */}
-            </button>
+            </Button>
           </div>
         </div>
 
