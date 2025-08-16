@@ -4,13 +4,20 @@ import { useCallback, useEffect, useState } from "react";
 const CreateScannedRecordField = ({ data, onSubmit }) => {
   const [fields, setFields] = useState([
     { fieldName: "pH", targetText: ["ph"], currentValue: "-" },
-    { fieldName: "pCO2", targetText: ["pcO", "pc0"], currentValue: "-" },
-    { fieldName: "PO2", targetText: ["po", "p0"], currentValue: "-" },
+    {
+      fieldName: "pCO2",
+      targetText: ["pco2", "pc02", "pco", "pc0"],
+      currentValue: "-",
+    },
+    {
+      fieldName: "PO2",
+      targetText: ["po2", "p02", "po", "p0", "pO"],
+      currentValue: "-",
+    },
     { fieldName: "HCO3", targetText: ["hco", "hc0"], currentValue: "-" },
     { fieldName: "TCO2", targetText: ["tco", "tc0"], currentValue: "-" },
     { fieldName: "BE", targetText: ["be", "be(b)"], currentValue: "-" },
     { fieldName: "SO2", targetText: ["so", "s0"], currentValue: "-" },
-    { fieldName: "FIO2", targetText: ["flo", "fl0"], currentValue: "-" },
   ]);
   const handleFirstNumber = (value) => {
     const parts = value
@@ -30,9 +37,10 @@ const CreateScannedRecordField = ({ data, onSubmit }) => {
           );
 
           if (match && field.currentValue === "-") {
-            const matchedExtractedText = data.find((extracted) =>
-              extracted.toLowerCase().includes(match.toLowerCase())
-            );
+            const matchedExtractedText = data.find((extracted) => {
+              console.log(match, extracted);
+              return extracted.toLowerCase().includes(match.toLowerCase());
+            });
 
             if (matchedExtractedText) {
               const filteredValue = handleFirstNumber(matchedExtractedText);

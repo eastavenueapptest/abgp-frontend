@@ -15,16 +15,24 @@ const ViewRequestPage = () => {
   const { data: medReq, isLoading: isGetRequestLoading } =
     useGetMedicalRequest(id);
   medReq?.map(
-    ({ patient_name, age, sex, diagnosis, physician_id, fio2_route }) => ({
+    ({
       patient_name,
       age,
       sex,
       diagnosis,
       physician_id,
       fio2_route,
+      status,
+    }) => ({
+      patient_name,
+      age,
+      sex,
+      diagnosis,
+      physician_id,
+      fio2_route,
+      status,
     })
   );
-
   const sexOptions = [
     { id: 1, label: "Male", value: "M" },
     { id: 2, label: "Female", value: "F" },

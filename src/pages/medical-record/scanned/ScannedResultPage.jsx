@@ -4,12 +4,16 @@ import imagePlaceholder from "../../../assets/images/placeholders/image.jpg";
 import CreateScannedRecordField from "../../../features/medical-record/CreateScannedRecordField";
 import { useAuthContext } from "../../../hooks/context/AuthContext";
 import useCreateMedicalResult from "../../../hooks/medical-record/use-create-medical-result";
+
+import useGetMachineDevice from "../../../hooks/medical-record/use-get-machine-devices";
 import useGetMedicalRequest from "../../../hooks/medical-record/use-get-medical-requests";
 import useOCR from "../../../hooks/medical-record/use-ocr";
 import SimpleAutoCompleteInput from "../../../shared-components/fields/SimpleAutoCompleteInput";
 
 const ScannedResultPage = () => {
-  const { data: requests, isLoading } = useGetMedicalRequest();
+  const { data: requests, isLoading: isGetRequestLoading } =
+    useGetMedicalRequest();
+  const { data: machines, isLoading: isMachineLoading } = useGetMachineDevice();
   const { isProcessing, ocrResult, handleOCR } = useOCR();
 
   const [image, setImage] = useState(null);
@@ -19,6 +23,7 @@ const ScannedResultPage = () => {
   const [input, setInput] = useState(null);
   const [result, setResult] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
+  const [selectedMachine, setSelectedMachine] = useState(null);
 
   const { isLoading: isRequestLoading } = useCreateMedicalResult(input);
 
@@ -30,6 +35,13 @@ const ScannedResultPage = () => {
         patient_name,
       }));
   }, [requests]);
+
+  const machineName = useMemo(() => {
+    return machines.map(({ id, machine_name }) => ({
+      id,
+      machine_name,
+    }));
+  }, [machines]);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -52,12 +64,18 @@ const ScannedResultPage = () => {
       abgFields[item.fieldName] = item.currentValue;
     });
     setInput({
-      requestId: selectedPatient.id,
+      requestId: selectedPatient?.id,
       rtId: employee?.id,
+      machineId: selectedMachine?.id,
       extractedText: abgFields,
     });
 
-    if (!isLoading) {
+    if (!isGetRequestLoading) {
+      setTimeout(() => {
+        handleClear();
+      }, [2000]);
+    }
+    if (!isMachineLoading) {
       setTimeout(() => {
         handleClear();
       }, [2000]);
@@ -80,7 +98,7 @@ const ScannedResultPage = () => {
     }
   }, [ocrResult]);
 
-  if (isLoading) {
+  if (isGetRequestLoading) {
     return <div>Loading...</div>;
   }
   return (
@@ -158,11 +176,24 @@ const ScannedResultPage = () => {
               }
             />
           </div>
+          <div className="flex-fill">
+            <SimpleAutoCompleteInput
+              data={machineName}
+              label="Machine"
+              value={selectedMachine}
+              onChange={(event, newValue) => setSelectedMachine(newValue)}
+              getOptionLabel={(option) => `${option.machine_name}`}
+            />
+          </div>
           <div className="flex-shrink-1">
             <Button
               type="button"
               variant="contained"
-              disabled={result?.length === 0 || !selectedPatient?.id}
+              disabled={
+                result?.length === 0 ||
+                !selectedPatient?.id ||
+                !selectedMachine?.id
+              }
               onClick={handleSubmit}
               sx={{
                 textTransform: "capitalize",

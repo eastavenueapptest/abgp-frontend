@@ -2,15 +2,15 @@ import { Chip } from "@mui/material";
 const statusMap = {
   1: {
     text: "On Process",
-    sx: { color: "orange", backgroundColor: "rgb(252, 217, 148)" },
+    sx: { color: "rgb(120, 60, 169)", backgroundColor: "rgb(205, 193, 255)" },
   },
   2: {
     text: "For Review",
-    sx: { color: "rgb(120, 60, 169)", backgroundColor: "rgb(205, 193, 255)" },
+    sx: { color: "green", backgroundColor: "rgb(148, 252, 163)" },
   },
   3: {
     text: "Completed",
-    sx: { color: "green", backgroundColor: "rgb(148, 252, 163)" },
+    sx: { color: "blue", backgroundColor: "rgba(148, 186, 252, 1)" },
   },
 };
 

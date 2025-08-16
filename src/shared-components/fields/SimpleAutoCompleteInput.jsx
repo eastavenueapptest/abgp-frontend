@@ -1,6 +1,5 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import React from "react";
 const SimpleAutoCompleteInput = ({
   data = [],
   label = "Select",
