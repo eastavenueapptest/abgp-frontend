@@ -1,39 +1,46 @@
 import { useCallback } from "react";
+import useGetMachineDevice from "../../hooks/medical-record/use-get-machine-devices";
 import useGetMedicalResults from "../../hooks/medical-record/use-get-medical-results";
 import SimpleCardCounter from "../../shared-components/cards/SimpleCardCounter";
 
 const OverviewPage = () => {
   const { data: resultsQuery, isLoading: resultIsLoading } =
     useGetMedicalResults();
-  console.log(resultsQuery);
-  const renderRow = useCallback((item, index) => {
-    const machineResult = JSON.parse(item?.extracted_text);
-    console.log(machineResult);
-    return (
-      <tr key={index}>
-        <td className="align-middle">{item?.id}</td>
-        <td className="align-middle">{item?.date_created_formatted}</td>
-        <td className="align-middle">{item?.machine}</td>
-        <td className="align-middle">{item?.timeReceiver}</td>
-        <td className="align-middle">{item?.extracted}</td>
-        <td className="align-middle">{item?.determined}</td>
-        <td>{item?.patient_name}</td>
-        <td className="align-middle">{item?.age}</td>
-        <td className="align-middle">{item?.sex}</td>
-        <td className="align-middle">{item?.fio2_route}</td>
-        <td className="align-middle">{machineResult?.pH}</td>
-        <td className="align-middle">{machineResult?.pCO2}</td>
-        <td className="align-middle">{machineResult?.PO2}</td>
-        <td className="align-middle">{machineResult?.HCO3}</td>
-        <td className="align-middle">{machineResult?.BE}</td>
-        <td className="align-middle">{item?.saO2}</td>
-        <td className="align-middle">{item?.rtod}</td>
-        <td className="align-middle">{item?.timeRelease}</td>
-        <td className="align-middle">{item?.renderedTime}</td>
-        <td className="align-middle">{item?.renderedTime}</td>
-      </tr>
-    );
-  }, []);
+  const { data: machineQuery } = useGetMachineDevice();
+
+  const renderRow = useCallback(
+    (item, index) => {
+      const abgResult = JSON.parse(item?.extracted_text);
+      const machineName = machineQuery.find(
+        (machine) => machine.id === item.machine_id
+      );
+      return (
+        <tr key={index}>
+          <td className="align-middle">{item?.id}</td>
+          <td className="align-middle">{item?.date_created_formatted}</td>
+          <td className="align-middle">{machineName?.machine_name}</td>
+          <td className="align-middle">{item?.timeReceiver}</td>
+          <td className="align-middle">{item?.extracted}</td>
+          <td className="align-middle">{item?.determined}</td>
+          <td>{item?.patient_name}</td>
+          <td className="align-middle">{item?.age}</td>
+          <td className="align-middle">{item?.sex}</td>
+          <td className="align-middle">{item?.fio2_route}</td>
+          <td className="align-middle">{abgResult?.pH}</td>
+          <td className="align-middle">{abgResult?.pCO2}</td>
+          <td className="align-middle">{abgResult?.PO2}</td>
+          <td className="align-middle">{abgResult?.HCO3}</td>
+          <td className="align-middle">{abgResult?.BE}</td>
+          <td className="align-middle">{abgResult?.tco2 ?? "-"}</td>
+          <td className="align-middle">{abgResult?.sao2 ?? "-"}</td>
+          <td className="align-middle">{item?.timeRelease}</td>
+          <td className="align-middle">{item?.renderedTime}</td>
+          <td className="align-middle">{item?.renderedTime}</td>
+        </tr>
+      );
+    },
+    [machineQuery]
+  );
 
   return (
     <div className="row overflow-auto">
