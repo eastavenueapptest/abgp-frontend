@@ -64,7 +64,7 @@ const OverviewPage = () => {
             </tr>
             <tr>
               <th>TOTAL</th>
-              <th></th>
+              <th>{resultsQuery?.length}</th>
             </tr>
             <tr>
               <th>EXT</th>
