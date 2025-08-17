@@ -158,7 +158,6 @@ const ABGFormPage = () => {
   if (resultIsLoading) {
     return <div>Loading...</div>;
   }
-  console.log(selectedResultId);
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">

@@ -31,7 +31,7 @@ const useChangePassword = () => {
       toast.success("Record Successfully updated");
     } catch (err) {
       setError(err.message);
-      toast.success("Record Failed to update");
+      toast.warning("Record Failed to update");
     } finally {
       setIsLoading(false);
     }

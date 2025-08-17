@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-const useEditUser = () => {
+const useDeleteUser = () => {
   const server = process.env.REACT_APP_SERVER;
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const editUser = async (userId, updateData) => {
+  const deleteUser = async (userId, updateData) => {
     try {
       setIsLoading(true);
       setError(null);
       const response = await fetch(`${server}/api/users/current/${userId}`, {
-        method: "PUT",
+        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
@@ -25,7 +25,7 @@ const useEditUser = () => {
 
       const result = await response.json();
       setData(result);
-      toast.success("Record Successfully updated");
+      toast.success("Record Successfully Deleted");
     } catch (err) {
       setError(err.message);
       toast.warning("Record Failed to update");
@@ -34,7 +34,7 @@ const useEditUser = () => {
     }
   };
 
-  return { editUser, data, isLoading, error };
+  return { deleteUser, data, isLoading, error };
 };
 
-export default useEditUser;
+export default useDeleteUser;

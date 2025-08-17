@@ -38,7 +38,6 @@ const CreateScannedRecordField = ({ data, onSubmit }) => {
 
           if (match && field.currentValue === "-") {
             const matchedExtractedText = data.find((extracted) => {
-              console.log(match, extracted);
               return extracted.toLowerCase().includes(match.toLowerCase());
             });
 

@@ -1,13 +1,16 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import useGetPositions from "../../hooks/position/use-get-positions";
+import useDeleteUser from "../../hooks/users/use-delete-user";
 import useEditUser from "../../hooks/users/use-edit-user";
 import useGetUser from "../../hooks/users/use.get-user";
 import SimpleViewForm from "../../shared-components/fields/SimpleViewForm";
 
 const ViewUserPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { editUser, isLoading: isEditUserLoading } = useEditUser(id);
+  const { deleteUser } = useDeleteUser(id);
 
   const { data: user, isLoading: isGetUserLoading } = useGetUser(id);
 
@@ -23,6 +26,15 @@ const ViewUserPage = () => {
 
   const handleSubmit = (formData) => {
     editUser(id, formData);
+  };
+
+  const handleDelete = () => {
+    console.log("ok");
+    deleteUser(id, { is_deleted: true });
+
+    setTimeout(() => {
+      navigate("/users");
+    }, [2000]);
   };
   const { data: position } = useGetPositions();
 
@@ -50,7 +62,7 @@ const ViewUserPage = () => {
             title={"Users Info"}
             items={user}
             onSubmit={handleSubmit}
-            onDelete={(data) => console.log("Delete", data)}
+            onDelete={handleDelete}
             isLoading={isEditUserLoading || isGetUserLoading}
             returnTo={"../users"}
             fields={items}
