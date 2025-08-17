@@ -2,6 +2,7 @@ import { Button, TextField } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useCreateEmail from "../../../hooks/email/use-create-email";
 import useEditMedicalResult from "../../../hooks/medical-record/use-edit-medical-result";
+import useEditStatusRequest from "../../../hooks/medical-record/use-edit-status-medical-requests";
 import useGetMedicalResult from "../../../hooks/medical-record/use-get-medical-result";
 import useGetMedicalResults from "../../../hooks/medical-record/use-get-medical-results";
 import useGetPhysicianDoctor from "../../../hooks/users/use-get-physician-doctor";
@@ -13,7 +14,6 @@ import StatusList from "../components/StatusList";
 
 const ABGFormPage = () => {
   const datetime = new Date().toISOString().split("T")[0];
-
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [date, setDate] = useState({
     from: datetime,
@@ -24,11 +24,15 @@ const ABGFormPage = () => {
   const resultFormRef = useRef();
   const { sendEmail } = useCreateEmail();
 
-  const { data: resultsQuery, isLoading: resultIsLoading } =
-    useGetMedicalResults({
-      from: date.from,
-      to: date.to,
-    });
+  const { editStatusRequest } = useEditStatusRequest();
+  const {
+    data: resultsQuery,
+    isLoading: resultIsLoading,
+    refetch: refetchMedicalResults,
+  } = useGetMedicalResults({
+    from: date.from,
+    to: date.to,
+  });
   const { data: userPhysicianQuery, isLoading: isPhysicianDoctorLoading } =
     useGetPhysicianDoctor();
   const { data: specificResultQuery, isLoading: specificResulIsLoading } =
@@ -69,7 +73,6 @@ const ABGFormPage = () => {
   }, [resultsQuery, selectedPatient]);
 
   const handlePreviewForm = (id) => {
-    console.log(id);
     setSelectedResultId(id);
   };
 
@@ -127,12 +130,25 @@ const ABGFormPage = () => {
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
+  const handleComplete = () => {
+    editStatusRequest(specificResultQuery?.request_id, {
+      status: 3,
+    });
+    setTimeout(() => {
+      refetchMedicalResults();
+      setSelectedResultId(null);
+    }, [2000]);
+  };
   const handleSendEmail = () => {
     sendEmail({ id: selectedResultId });
   };
 
   const handleUpdateInterpretation = (formData) => {
     editMedicalResult(selectedResultId, formData);
+    setTimeout(() => {
+      refetchMedicalResults();
+      setSelectedResultId(null);
+    }, 2000);
   };
   useEffect(() => {
     if (specificResultQuery) {
@@ -142,6 +158,7 @@ const ABGFormPage = () => {
   if (resultIsLoading) {
     return <div>Loading...</div>;
   }
+  console.log(selectedResultId);
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -214,68 +231,88 @@ const ABGFormPage = () => {
       </div>
 
       <div className="col-lg-8 col-md-8 col-sm-12 col-12 border p-3">
-        <div className="mb-3 d-flex align-items-center gap-3">
-          <div className="flex-shrink-1">
-            <Button
-              variant="contained"
-              sx={{
-                textTransform: "capitalize",
-              }}
-              disabled={specificResulIsLoading}
-              onClick={handlePrint}
-            >
-              Print {specificResulIsLoading}
-            </Button>
+        {selectedResultId && (
+          <div className="mb-3 d-flex align-items-center gap-3">
+            <div className="flex-shrink-1">
+              <Button
+                variant="contained"
+                sx={{
+                  textTransform: "capitalize",
+                }}
+                disabled={specificResulIsLoading}
+                onClick={handlePrint}
+              >
+                Print {specificResulIsLoading}
+              </Button>
+            </div>
+            {specificResultQuery?.status === 2 && (
+              <div className="flex-shrink-1">
+                <Button
+                  variant="contained"
+                  sx={{
+                    textTransform: "capitalize",
+                  }}
+                  disabled={specificResulIsLoading}
+                  onClick={handleComplete}
+                >
+                  Mark as Complete
+                </Button>
+              </div>
+            )}
+            {specificResultQuery?.status === 3 && (
+              <div className="flex-shrink-1">
+                <Button
+                  variant="contained"
+                  sx={{
+                    textTransform: "capitalize",
+                  }}
+                  disabled={specificResulIsLoading}
+                  onClick={handleSendEmail}
+                >
+                  Email to Department{" "}
+                </Button>
+              </div>
+            )}
+            <div className="flex-shrink-1">
+              <SimpleModal
+                open={isModalOpen}
+                onOpen={handleOpenModal}
+                onClose={handleCloseModal}
+                body={
+                  !specificResulIsLoading &&
+                  specificResultQuery && (
+                    <div className="mb-3 px-3">
+                      <SimpleForm
+                        subtitle={`Update patient ${specificResultQuery?.patient_name}'s result Interpretation`}
+                        fields={items}
+                        defaultValues={{
+                          interpreted_by: specificResultQuery?.interpreted_by,
+                          interpreted_message:
+                            specificResultQuery?.interpreted_message,
+                        }}
+                        onSubmit={(formData) => {
+                          handleUpdateInterpretation(formData);
+                          handleCloseModal();
+                        }}
+                        isLoading={
+                          isEditResultLoading || isPhysicianDoctorLoading
+                        }
+                      />
+                    </div>
+                  )
+                }
+              />
+            </div>
           </div>
-
-          <div className="flex-shrink-1">
-            <Button
-              variant="contained"
-              sx={{
-                textTransform: "capitalize",
-              }}
-              disabled={specificResulIsLoading}
-              onClick={handleSendEmail}
-            >
-              Email to Department{" "}
-            </Button>
-          </div>
-
-          <div className="flex-shrink-1">
-            <SimpleModal
-              open={isModalOpen}
-              onOpen={handleOpenModal}
-              onClose={handleCloseModal}
-              body={
-                !specificResulIsLoading &&
-                specificResultQuery && (
-                  <div className="mb-3 px-3">
-                    <SimpleForm
-                      subtitle={`Update patient ${specificResultQuery?.patient_name}'s result Interpretation`}
-                      fields={items}
-                      defaultValues={{
-                        interpreted_by: specificResultQuery?.interpreted_by,
-                        interpreted_message:
-                          specificResultQuery?.interpreted_message,
-                      }}
-                      onSubmit={(formData) => {
-                        handleUpdateInterpretation(formData);
-                        handleCloseModal();
-                      }}
-                      isLoading={
-                        isEditResultLoading || isPhysicianDoctorLoading
-                      }
-                    />
-                  </div>
-                )
-              }
-            />
-          </div>
-        </div>
-
+        )}
         <div className="border  mb-3 d-flex align-items-center">
-          {specificResulIsLoading ? (
-            "No Preview"
+          {specificResulIsLoading || selectedResultId == null ? (
+            <div className="w-100 d-flex justify-content-center">
+              {" "}
+              <label className="m-auto p-2 text-secondary">
+                Please select a result.
+              </label>
+            </div>
           ) : (
             <div ref={resultFormRef} style={{ padding: 0, margin: 0 }}>
               <ResultForm
