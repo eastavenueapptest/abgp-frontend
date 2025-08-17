@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const useGetMedicalResults = ({ from, to }) => {
+const useGetCountRequests = ({ from, to }) => {
   const server = process.env.REACT_APP_SERVER;
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -15,7 +15,7 @@ const useGetMedicalResults = ({ from, to }) => {
         if (to) query.append("to", to);
 
         const response = await fetch(
-          `${server}/api/medical-test-results?${query.toString()}`
+          `${server}/api/medical-test-request/count-requests?${query.toString()}`
         );
 
         if (!response.ok) {
@@ -37,4 +37,4 @@ const useGetMedicalResults = ({ from, to }) => {
   return { data, isLoading, error };
 };
 
-export default useGetMedicalResults;
+export default useGetCountRequests;

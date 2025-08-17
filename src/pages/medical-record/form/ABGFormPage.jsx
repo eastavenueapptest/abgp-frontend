@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useCreateEmail from "../../../hooks/email/use-create-email";
 import useEditMedicalResult from "../../../hooks/medical-record/use-edit-medical-result";
@@ -12,15 +12,23 @@ import ResultForm from "../components/ResultForm";
 import StatusList from "../components/StatusList";
 
 const ABGFormPage = () => {
-  const [selectedPatient, setSelectedPatient] = useState(null);
+  const datetime = new Date().toISOString().split("T")[0];
 
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [date, setDate] = useState({
+    from: datetime,
+    to: datetime,
+  });
   const [selectedResultId, setSelectedResultId] = useState(null);
   const [fields, setFields] = useState(null);
   const resultFormRef = useRef();
   const { sendEmail } = useCreateEmail();
 
   const { data: resultsQuery, isLoading: resultIsLoading } =
-    useGetMedicalResults();
+    useGetMedicalResults({
+      from: date.from,
+      to: date.to,
+    });
   const { data: userPhysicianQuery, isLoading: isPhysicianDoctorLoading } =
     useGetPhysicianDoctor();
   const { data: specificResultQuery, isLoading: specificResulIsLoading } =
@@ -141,13 +149,51 @@ const ABGFormPage = () => {
           <div className="py-2">
             <h5>Search Patient</h5>
           </div>
-          <SimpleAutoCompleteInput
-            data={patientName}
-            label="Patient"
-            value={selectedPatient}
-            onChange={(event, newValue) => setSelectedPatient(newValue)}
-            getOptionLabel={(option) => option.patient_name}
-          />
+          <div className="mb-3">
+            <SimpleAutoCompleteInput
+              data={patientName}
+              label="Patient"
+              value={selectedPatient}
+              onChange={(event, newValue) => setSelectedPatient(newValue)}
+              getOptionLabel={(option) => option.patient_name}
+            />
+          </div>
+          <div className="mb-3">
+            <TextField
+              size="small"
+              label="Date From"
+              type="date"
+              value={date?.from}
+              fullWidth
+              onChange={(e) =>
+                setDate((prev) => ({ ...prev, from: e.target.value }))
+              }
+              slotProps={{
+                textField: {
+                  InputLabelProps: { shrink: true },
+                  size: "small",
+                },
+              }}
+            />
+          </div>
+          <div className="mb-3">
+            <TextField
+              size="small"
+              label="Date To"
+              type="date"
+              value={date?.to}
+              fullWidth
+              onChange={(e) =>
+                setDate((prev) => ({ ...prev, to: e.target.value }))
+              }
+              slotProps={{
+                textField: {
+                  InputLabelProps: { shrink: true },
+                  size: "small",
+                },
+              }}
+            />
+          </div>
         </div>
 
         {filteredResults.length > 0 && (
