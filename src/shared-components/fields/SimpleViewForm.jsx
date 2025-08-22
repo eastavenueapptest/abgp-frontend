@@ -13,6 +13,7 @@ const SimpleForm = ({
   onDelete,
   returnTo,
   fields = [],
+  showSubmit = true,
 }) => {
   const [formData, setFormData] = useState(
     Array.isArray(items) && items.length > 0 ? items[0] : {}
@@ -97,24 +98,26 @@ const SimpleForm = ({
             Back
           </Button>
         )}
-        <Button
-          type="submit"
-          variant="contained"
-          disabled={isLoading}
-          sx={{
-            textTransform: "capitalize",
-            backgroundColor: "green",
-            "&:hover": { backgroundColor: "darkgreen" },
-          }}
-        >
-          {isLoading ? (
-            <>
-              <CircularProgress size={18} sx={{ mr: 1 }} /> Processing...
-            </>
-          ) : (
-            "Submit"
-          )}
-        </Button>
+        {showSubmit && (
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={isLoading}
+            sx={{
+              textTransform: "capitalize",
+              backgroundColor: "green",
+              "&:hover": { backgroundColor: "darkgreen" },
+            }}
+          >
+            {isLoading ? (
+              <>
+                <CircularProgress size={18} sx={{ mr: 1 }} /> Processing...
+              </>
+            ) : (
+              "Submit"
+            )}
+          </Button>
+        )}
       </div>
     </form>
   );

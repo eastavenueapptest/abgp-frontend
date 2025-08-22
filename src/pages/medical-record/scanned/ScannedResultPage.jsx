@@ -29,7 +29,7 @@ const ScannedResultPage = () => {
 
   const patientName = useMemo(() => {
     return requests
-      ?.filter((item) => item.status === 0)
+      ?.filter((item) => item.status === 1)
       .map(({ id, patient_name }) => ({
         id,
         patient_name,
@@ -89,6 +89,7 @@ const ScannedResultPage = () => {
     setScannedFields(null);
     setInput(null);
     setSelectedPatient(null);
+    setSelectedMachine(null);
     document.getElementById("imageInput").value = "";
   };
 
@@ -200,8 +201,6 @@ const ScannedResultPage = () => {
               }}
             >
               Approve Result
-              {/* ALTER TABLE results MODIFY extracted_text LONGTEXT;
-               */}
             </Button>
           </div>
         </div>

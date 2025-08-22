@@ -1,13 +1,17 @@
-import { useParams } from "react-router-dom";
-import useGetMedicalRequest from "../../../hooks/medical-record/use-get-medical-request";
-
+import { useNavigate, useParams } from "react-router-dom";
+import useDeleteRequest from "../../../hooks/medical-record/use-delete-medical-request";
 import useEditMedicalRequest from "../../../hooks/medical-record/use-edit-medical-request";
+import useGetMedicalRequest from "../../../hooks/medical-record/use-get-medical-request";
 import useGetPhysicianDoctor from "../../../hooks/users/use-get-physician-doctor";
 import SimpleViewForm from "../../../shared-components/fields/SimpleViewForm";
+import { formatActiveStatus } from "../../../utils/formatActiveStatus";
+import { formatStatus } from "../../../utils/formatStatus";
 
 const ViewRequestPage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const { data: physicians } = useGetPhysicianDoctor();
+  const { deleteRequest } = useDeleteRequest(id);
 
   const { editRequest, isLoading: isEditRequestLoading } =
     useEditMedicalRequest();
@@ -23,6 +27,7 @@ const ViewRequestPage = () => {
       physician_id,
       fio2_route,
       status,
+      is_deleted,
     }) => ({
       patient_name,
       age,
@@ -31,8 +36,11 @@ const ViewRequestPage = () => {
       physician_id,
       fio2_route,
       status,
+      is_deleted,
     })
   );
+
+  const currentRequest = medReq?.[0];
   const sexOptions = [
     { id: 1, label: "Male", value: "M" },
     { id: 2, label: "Female", value: "F" },
@@ -40,6 +48,13 @@ const ViewRequestPage = () => {
   const handleSubmit = (formData) => {
     editRequest(id, formData);
   };
+  const handleDelete = () => {
+    deleteRequest(id, { is_deleted: true });
+    setTimeout(() => {
+      navigate("/medical-records/request");
+    }, [2000]);
+  };
+
   const physicianOptions =
     physicians?.map(({ id, employee_name }) => ({
       id,
@@ -71,10 +86,19 @@ const ViewRequestPage = () => {
       <div className="row">
         <div className="col-6">
           <SimpleViewForm
-            title="Patient Info"
+            title={
+              <div>
+                Patient Info {formatStatus(currentRequest?.status)}{" "}
+                {formatActiveStatus(currentRequest?.is_deleted)}
+              </div>
+            }
             items={medReq}
             onSubmit={handleSubmit}
-            onDelete={(data) => console.log("Delete", data)}
+            onDelete={
+              currentRequest?.is_deleted === 0 && currentRequest?.status === 1
+                ? handleDelete
+                : null
+            }
             isLoading={isGetRequestLoading || isEditRequestLoading}
             returnTo={"request"}
             fields={items}

@@ -5,6 +5,7 @@ import useDeleteUser from "../../hooks/users/use-delete-user";
 import useEditUser from "../../hooks/users/use-edit-user";
 import useGetUser from "../../hooks/users/use.get-user";
 import SimpleViewForm from "../../shared-components/fields/SimpleViewForm";
+import { formatActiveStatus } from "../../utils/formatActiveStatus";
 
 const ViewUserPage = () => {
   const { id } = useParams();
@@ -15,23 +16,30 @@ const ViewUserPage = () => {
   const { data: user, isLoading: isGetUserLoading } = useGetUser(id);
 
   user?.map(
-    ({ employee_name, employee_number, username, password, position_id }) => ({
+    ({
       employee_name,
       employee_number,
       username,
       password,
       position_id,
+      is_deleted,
+    }) => ({
+      employee_name,
+      employee_number,
+      username,
+      password,
+      position_id,
+      is_deleted,
     })
   );
+  const currentUser = user?.[0];
 
   const handleSubmit = (formData) => {
     editUser(id, formData);
   };
 
   const handleDelete = () => {
-    console.log("ok");
     deleteUser(id, { is_deleted: true });
-
     setTimeout(() => {
       navigate("/users");
     }, [2000]);
@@ -56,16 +64,20 @@ const ViewUserPage = () => {
   ];
   return (
     <div className="container">
+      <div></div>
       <div className="row">
         <div className="col-6">
           <SimpleViewForm
-            title={"Users Info"}
+            title={
+              <div>User Info {formatActiveStatus(currentUser?.is_deleted)}</div>
+            }
             items={user}
             onSubmit={handleSubmit}
-            onDelete={handleDelete}
+            onDelete={currentUser?.is_deleted === 0 ? handleDelete : null}
             isLoading={isEditUserLoading || isGetUserLoading}
             returnTo={"../users"}
             fields={items}
+            showSubmit={currentUser?.is_deleted === 1 ? false : true}
           />
         </div>
       </div>

@@ -1,19 +1,22 @@
 import useGetMedicalRequest from "../../../hooks/medical-record/use-get-medical-requests";
 import SimpleTable from "../../../shared-components/tables/SimpleTable";
+import { formatActiveStatus } from "../../../utils/formatActiveStatus";
 import { formatStatus } from "../../../utils/formatStatus";
 
 const columns = [
   { id: "id", label: "ID" },
   { id: "patient_name", label: "Name" },
   { id: "date_created", label: "Date" },
-  { id: "status", label: "Status" },
+  { id: "status", label: "Document Status" },
+  { id: "is_deleted", label: "Active Status" },
 ];
 
 const RequestPage = () => {
   const { data: testRequests = [], isLoading } = useGetMedicalRequest();
 
-  const rows = testRequests.map(({ status, ...rest }) => ({
+  const rows = testRequests.map(({ status, is_deleted, ...rest }) => ({
     status: formatStatus(status),
+    is_deleted: formatActiveStatus(is_deleted),
     ...rest,
   }));
 
