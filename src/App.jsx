@@ -18,6 +18,7 @@ import ScannedResultPage from "./pages/medical-record/scanned/ScannedResultPage"
 import CreateUserPage from "./pages/users/CreateUserPage";
 import UsersPage from "./pages/users/UsersPage";
 
+import { ThemeProvider } from "@emotion/react";
 import { updatePageVisibility } from "./helpers/routes/PermissionRoute";
 import ProtectedRoute from "./helpers/routes/ProtectedRoute";
 import { useAuthContext } from "./hooks/context/AuthContext";
@@ -25,6 +26,7 @@ import Error404Page from "./pages/block/Error404Page";
 import LoadingScreen from "./pages/block/LoadingScreen";
 import UpdatePasswordPage from "./pages/users/UpdatePasswordPage";
 import ViewUserPage from "./pages/users/ViewUserPage";
+import SystemThemes from "./styles/SystemThemes";
 
 const App = () => {
   const pages = useMemo(
@@ -167,7 +169,15 @@ const App = () => {
         </Route>
       </Route>
       <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={<LoginPage />} />
+
+      <Route
+        path="/login"
+        element={
+          <ThemeProvider theme={SystemThemes}>
+            <LoginPage />
+          </ThemeProvider>
+        }
+      />
       <Route path="*" element={<Error404Page />} />
     </Routes>
   );
