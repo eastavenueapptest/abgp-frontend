@@ -102,6 +102,11 @@ const ViewRequestPage = () => {
             isLoading={isGetRequestLoading || isEditRequestLoading}
             returnTo={"request"}
             fields={items}
+            showSubmit={
+              currentRequest?.is_deleted === 1 || currentRequest?.status > 1
+                ? false
+                : true
+            }
           />
         </div>
       </div>
