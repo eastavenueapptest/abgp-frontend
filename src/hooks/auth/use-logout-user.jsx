@@ -27,7 +27,7 @@ export const useLogoutUser = () => {
 
       await refresh();
 
-      toast.info("Logging you out");
+      toast.success("Logging you out");
 
       setTimeout(() => {
         navigate("/login");
