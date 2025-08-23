@@ -165,15 +165,7 @@ const ABGFormPage = () => {
           <div className="py-2">
             <h5>Search Patient</h5>
           </div>
-          <div className="mb-3">
-            <SimpleAutoCompleteInput
-              data={patientName}
-              label="Patient"
-              value={selectedPatient}
-              onChange={(event, newValue) => setSelectedPatient(newValue)}
-              getOptionLabel={(option) => option.patient_name}
-            />
-          </div>
+
           <div className="mb-3">
             <TextField
               size="small"
@@ -208,6 +200,15 @@ const ABGFormPage = () => {
                   size: "small",
                 },
               }}
+            />
+          </div>
+          <div className="mb-3">
+            <SimpleAutoCompleteInput
+              data={patientName}
+              label="Patient name"
+              value={selectedPatient}
+              onChange={(event, newValue) => setSelectedPatient(newValue)}
+              getOptionLabel={(option) => option.patient_name}
             />
           </div>
         </div>
