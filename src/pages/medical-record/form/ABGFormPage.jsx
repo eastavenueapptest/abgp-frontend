@@ -158,6 +158,7 @@ const ABGFormPage = () => {
   if (resultIsLoading) {
     return <div>Loading...</div>;
   }
+  console.log(filteredResults);
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -222,7 +223,7 @@ const ABGFormPage = () => {
               onhandlePreview={handlePreviewForm}
               label={"patient_name"}
               status={"status"}
-              date={"date_text"}
+              date={"date_created_formatted"}
               longText={"diagnosis"}
               items={filteredResults}
             />
