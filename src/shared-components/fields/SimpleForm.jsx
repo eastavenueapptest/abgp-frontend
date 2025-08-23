@@ -58,6 +58,9 @@ const SimpleForm = ({ onSubmit, items, title, isLoading, returnTo }) => {
             component={Link}
             to={`../${returnTo}`}
             variant="outlined"
+            sx={{
+              textTransform: "capitalize",
+            }}
             sx={{ textTransform: "capitalize", mr: 2 }}
           >
             Back
