@@ -63,7 +63,14 @@ const SimpleForm = ({ onSubmit, items, title, isLoading, returnTo }) => {
             Back
           </Button>
         )}
-        <Button type="submit" variant="contained" disabled={isLoading}>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{
+            textTransform: "capitalize",
+          }}
+          disabled={isLoading}
+        >
           {isLoading ? "Processing" : "Submit"}
         </Button>
       </div>

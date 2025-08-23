@@ -23,7 +23,6 @@ const OverviewPage = () => {
   const totalCompleted = requestsCountQuery?.filter(
     (item) => item.status === 3
   );
-  console.log(totalCompleted);
   const { data: resultsQuery, isLoading: resultIsLoading } =
     useGetMedicalResults({
       from: date.from,
