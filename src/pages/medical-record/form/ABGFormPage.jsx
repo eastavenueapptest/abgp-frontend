@@ -314,7 +314,11 @@ const ABGFormPage = () => {
               </label>
             </div>
           ) : (
-            <div ref={resultFormRef} style={{ padding: 0, margin: 0 }}>
+            <div
+              ref={resultFormRef}
+              className="w-100"
+              style={{ padding: 0, margin: 0 }}
+            >
               <ResultForm
                 defaultValues={{
                   prepared_by: specificResultQuery?.respiratory_therapists,

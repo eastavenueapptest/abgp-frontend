@@ -20,11 +20,11 @@ export default function MainLayout({ modules, ...props }) {
   const { user } = useAuthContext();
   const { logout } = useLogoutUser();
   const employee = user?.user;
-
+  console.log(employee);
   const [session, setSession] = useState({
     user: {
       name: employee?.employee_name,
-      email: employee?.employee_number,
+      email: employee?.position_name,
       image: employee?.profile || null,
     },
     org: {
