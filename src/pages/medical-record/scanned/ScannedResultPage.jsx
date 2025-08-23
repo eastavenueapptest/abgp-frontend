@@ -134,6 +134,9 @@ const ScannedResultPage = () => {
               <Button
                 type="button"
                 variant="outlined"
+                sx={{
+                  textTransform: "capitalize",
+                }}
                 disabled={!image && result.length === 0 && !selectedPatient}
                 onClick={handleClear}
               >
