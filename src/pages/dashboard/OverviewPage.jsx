@@ -2,7 +2,6 @@ import { Check, FolderOpen, Search } from "@mui/icons-material";
 import { TextField } from "@mui/material";
 import { useCallback, useState } from "react";
 import useGetMachineDevice from "../../hooks/medical-record/use-get-machine-devices";
-import useGetCountRequests from "../../hooks/medical-record/use-get-medical-requests-counter";
 import useGetMedicalResults from "../../hooks/medical-record/use-get-medical-results";
 import SimpleCardCounter from "../../shared-components/cards/SimpleCardCounter";
 
@@ -13,26 +12,18 @@ const OverviewPage = () => {
     to: datetime,
   });
 
-  const { data: requestsCountQuery } = useGetCountRequests({
-    from: date.from,
-    to: date.to,
-  });
-
-  const totalResultCollected = requestsCountQuery?.filter((item) =>
-    [2, 3].includes(item.status)
-  );
-
-  const totalForReview = requestsCountQuery?.filter(
-    (item) => item.status === 2
-  );
-  const totalCompleted = requestsCountQuery?.filter(
-    (item) => item.status === 3
-  );
   const { data: resultsQuery, isLoading: resultIsLoading } =
     useGetMedicalResults({
       from: date.from,
       to: date.to,
     });
+  const totalResultCollected = resultsQuery?.filter((item) =>
+    [2, 3].includes(item.status)
+  );
+
+  const totalForReview = resultsQuery?.filter((item) => item.status === 2);
+  const totalCompleted = resultsQuery?.filter((item) => item.status === 3);
+
   const { data: machineQuery } = useGetMachineDevice();
   const renderRow = useCallback(
     (item, index) => {
@@ -67,7 +58,6 @@ const OverviewPage = () => {
     },
     [machineQuery]
   );
-
   return (
     <div className="container-fluid">
       <div className="row">
