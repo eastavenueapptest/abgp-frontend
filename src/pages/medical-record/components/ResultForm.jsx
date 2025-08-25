@@ -53,18 +53,22 @@ const ResultForm = ({ defaultValues }) => {
     { gridName: "ageGender", label: "AGE/GENDER:" },
     { gridName: "ward", label: "WARD:" },
     { gridName: "date", label: "DATE:" },
+
     { gridName: "diagnosis", label: "DIAGNOSIS:" },
     { gridName: "physician", label: "PHYSICIAN:" },
     { gridName: "time", label: "TIME:" },
     { gridName: "temp", label: "TEMP:" },
+
     { gridName: "hgb", label: "HGB:" },
     { gridName: "fio2", label: "FIO2:" },
     { gridName: "pH", label: "pH:" },
     { gridName: "pco2", label: "pCO2:" },
+
     { gridName: "hco3", label: "HC03:" },
     { gridName: "be", label: "ABE:" },
     { gridName: "hgb", label: "HGB:" },
     { gridName: "sao2", label: "Sa02:" },
+
     { gridName: "ctco2", label: "ctC02:" },
     { gridName: "po2", label: "PO2" },
     { gridName: "oxygeneation", label: "ADEQUATE OXYGENATION:", box: true },
@@ -93,6 +97,7 @@ const ResultForm = ({ defaultValues }) => {
       box: true,
     },
   ];
+
   const footetFields = [
     {
       label: "PREPARED BY",

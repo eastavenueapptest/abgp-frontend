@@ -23,7 +23,6 @@ const ABGFormPage = () => {
   const [fields, setFields] = useState(null);
   const resultFormRef = useRef();
   const { sendEmail } = useCreateEmail();
-
   const { editStatusRequest } = useEditStatusRequest();
   const {
     data: resultsQuery,
@@ -39,7 +38,7 @@ const ABGFormPage = () => {
     useGetMedicalResult(selectedResultId);
 
   const { editMedicalResult, isLoading: isEditResultLoading } =
-    useEditMedicalResult(selectedResultId);
+    useEditMedicalResult();
 
   const patientName = useMemo(() => {
     return resultsQuery
@@ -139,6 +138,7 @@ const ABGFormPage = () => {
       setSelectedResultId(null);
     }, [2000]);
   };
+
   const handleSendEmail = () => {
     sendEmail({ id: selectedResultId });
   };
@@ -158,7 +158,6 @@ const ABGFormPage = () => {
   if (resultIsLoading) {
     return <div>Loading...</div>;
   }
-  console.log(filteredResults);
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -337,7 +336,7 @@ const ABGFormPage = () => {
                   pH: fields?.pH,
                   pco2: fields?.pCO2,
                   po2: fields?.PO2,
-                  hco3: fields?.HC03,
+                  hco3: fields?.HCO3,
                   be: fields?.BE,
                   sao2: fields?.SO2,
                   ctco2: fields?.TCO2,

@@ -17,6 +17,11 @@ const OverviewPage = () => {
     from: date.from,
     to: date.to,
   });
+
+  const totalResultCollected = requestsCountQuery?.filter((item) =>
+    [2, 3].includes(item.status)
+  );
+
   const totalForReview = requestsCountQuery?.filter(
     (item) => item.status === 2
   );
@@ -29,7 +34,6 @@ const OverviewPage = () => {
       to: date.to,
     });
   const { data: machineQuery } = useGetMachineDevice();
-
   const renderRow = useCallback(
     (item, index) => {
       const abgResult = JSON.parse(item?.extracted_text);
@@ -38,7 +42,7 @@ const OverviewPage = () => {
       );
       return (
         <tr key={index}>
-          <td className="align-middle">{item?.id}</td>
+          <td className="align-middle">{item?.request_id}</td>
           <td className="align-middle">{item?.date_created_formatted}</td>
           <td className="align-middle">{machineName?.machine_name}</td>
           <td className="align-middle">{item?.timeReceiver}</td>
@@ -55,8 +59,8 @@ const OverviewPage = () => {
           <td className="align-middle">{abgResult?.BE}</td>
           <td className="align-middle">{abgResult?.SO2 ?? "-"}</td>
           <td className="align-middle">{abgResult?.TCO2 ?? "-"}</td>
+          <td className="align-middle">{item?.respiratory_therapists}</td>
           <td className="align-middle">{item?.timeRelease}</td>
-          <td className="align-middle">{item?.renderedTime}</td>
           <td className="align-middle">{item?.renderedTime}</td>
         </tr>
       );
@@ -70,7 +74,7 @@ const OverviewPage = () => {
         <div className="col-2 p-2">
           <SimpleCardCounter
             icon={<FolderOpen />}
-            counterValue={requestsCountQuery?.length ?? 0}
+            counterValue={totalResultCollected?.length ?? 0}
             title={"Total Result Collected"}
           />
         </div>
@@ -151,7 +155,7 @@ const OverviewPage = () => {
               </tr>
               <tr>
                 <th>TOTAL</th>
-                <th>{resultsQuery?.length}</th>
+                <th>{totalResultCollected?.length}</th>
               </tr>
               <tr>
                 <th>EXT</th>
