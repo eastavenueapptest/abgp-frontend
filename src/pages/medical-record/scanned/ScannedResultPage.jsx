@@ -1,4 +1,4 @@
-import { Button } from "@mui/material";
+import { Button, FormControlLabel, Radio, RadioGroup } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
 import imagePlaceholder from "../../../assets/images/placeholders/image.jpg";
 import CreateScannedRecordField from "../../../features/medical-record/CreateScannedRecordField";
@@ -104,7 +104,7 @@ const ScannedResultPage = () => {
   }
   return (
     <div className="row">
-      <div className="col-lg-4 col-md-4 col-sm-12 col-12">
+      <div className="col-lg-4 col-md-12 col-sm-12 col-12">
         <div className="border p-3">
           <div className="py-2">
             <h5>Image Preview</h5>
@@ -167,9 +167,9 @@ const ScannedResultPage = () => {
           </form>
         </div>
       </div>
-      <div className="col-lg-8 col-md-8 col-sm-12 col-12">
-        <div className="border p-3 mb-3 d-flex align-items-center gap-3">
-          <div className="flex-fill">
+      <div className="col-lg-8 col-md-12 col-sm-12 col-12">
+        <div className="row border py-3 mb-3 align-items-center px-2">
+          <div className="col-lg-6 p-2">
             <SimpleAutoCompleteInput
               data={patientName}
               label="Patient name"
@@ -180,7 +180,7 @@ const ScannedResultPage = () => {
               }
             />
           </div>
-          <div className="flex-fill">
+          <div className="col-lg-6 p-2">
             <SimpleAutoCompleteInput
               data={machineName}
               label="Machine"
@@ -189,22 +189,36 @@ const ScannedResultPage = () => {
               getOptionLabel={(option) => `${option.machine_name}`}
             />
           </div>
-          <div className="flex-shrink-1">
-            <Button
-              type="button"
-              variant="contained"
-              disabled={
-                result?.length === 0 ||
-                !selectedPatient?.id ||
-                !selectedMachine?.id
-              }
-              onClick={handleSubmit}
-              sx={{
-                textTransform: "capitalize",
-              }}
-            >
-              Approve Result
-            </Button>
+          <div className="col-lg-12 p-2">
+            <div className="d-flex justify-content-between p-0">
+              <RadioGroup row>
+                <FormControlLabel
+                  value="1"
+                  control={<Radio />}
+                  label="Determined"
+                />
+                <FormControlLabel
+                  value="2"
+                  control={<Radio />}
+                  label="Extracted"
+                />
+              </RadioGroup>
+              <Button
+                type="button"
+                variant="contained"
+                disabled={
+                  result?.length === 0 ||
+                  !selectedPatient?.id ||
+                  !selectedMachine?.id
+                }
+                onClick={handleSubmit}
+                sx={{
+                  textTransform: "capitalize",
+                }}
+              >
+                Approve Result
+              </Button>
+            </div>
           </div>
         </div>
 

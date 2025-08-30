@@ -1,11 +1,16 @@
-import { Check, FolderOpen, Search } from "@mui/icons-material";
-import { TextField } from "@mui/material";
-import { useCallback, useState } from "react";
-import useGetMachineDevice from "../../hooks/medical-record/use-get-machine-devices";
+import { Check, Close, FolderOpen, Search } from "@mui/icons-material";
+import { Button, TextField } from "@mui/material";
+import { useCallback, useMemo, useState } from "react";
+import { CSVLink } from "react-csv";
+import { Link } from "react-router-dom";
 import useGetMedicalResults from "../../hooks/medical-record/use-get-medical-results";
 import SimpleCardCounter from "../../shared-components/cards/SimpleCardCounter";
+import SimpleAutoCompleteInput from "../../shared-components/fields/SimpleAutoCompleteInput";
 
+import dohLogo from "../../assets/images/brand/dohLogo.png";
+import eastAveLogo from "../../assets/images/brand/eastAveLogo.png";
 const OverviewPage = () => {
+  const [selectedRt, setSelectedRt] = useState(null);
   const datetime = new Date().toISOString().split("T")[0];
   const [date, setDate] = useState({
     from: datetime,
@@ -17,50 +22,102 @@ const OverviewPage = () => {
       from: date.from,
       to: date.to,
     });
-  const totalResultCollected = resultsQuery?.filter((item) =>
+
+  const filteredResults = useMemo(() => {
+    if (!selectedRt?.respiratory_therapists) return resultsQuery;
+    return resultsQuery?.filter(
+      (e) => e.respiratory_therapists === selectedRt.respiratory_therapists
+    );
+  }, [resultsQuery, selectedRt]);
+
+  const headers = [
+    { label: "Sample Number", key: "request_id" },
+    { label: "Date", key: "medical_requests_date_created_formatted" },
+    { label: "Machine", key: "machine_name" },
+    { label: "Time Receiver", key: "medical_requests_time_only" },
+  ];
+  const totalResultCollected = filteredResults?.filter((item) =>
     [2, 3].includes(item.status)
   );
 
-  const totalForReview = resultsQuery?.filter((item) => item.status === 2);
-  const totalCompleted = resultsQuery?.filter((item) => item.status === 3);
-
-  const { data: machineQuery } = useGetMachineDevice();
-  const renderRow = useCallback(
-    (item, index) => {
-      const abgResult = JSON.parse(item?.extracted_text);
-      const machineName = machineQuery.find(
-        (machine) => machine.id === item.machine_id
-      );
-      return (
-        <tr key={index}>
-          <td className="align-middle">{item?.request_id}</td>
-          <td className="align-middle">{item?.date_created_formatted}</td>
-          <td className="align-middle">{machineName?.machine_name}</td>
-          <td className="align-middle">{item?.timeReceiver}</td>
-          <td className="align-middle">{item?.extracted}</td>
-          <td className="align-middle">{item?.determined}</td>
-          <td>{item?.patient_name}</td>
-          <td className="align-middle">{item?.age}</td>
-          <td className="align-middle">{item?.sex}</td>
-          <td className="align-middle">{item?.fio2_route}</td>
-          <td className="align-middle">{abgResult?.pH}</td>
-          <td className="align-middle">{abgResult?.pCO2}</td>
-          <td className="align-middle">{abgResult?.PO2}</td>
-          <td className="align-middle">{abgResult?.HCO3}</td>
-          <td className="align-middle">{abgResult?.BE}</td>
-          <td className="align-middle">{abgResult?.SO2 ?? "-"}</td>
-          <td className="align-middle">{abgResult?.TCO2 ?? "-"}</td>
-          <td className="align-middle">{item?.respiratory_therapists}</td>
-          <td className="align-middle">{item?.timeRelease}</td>
-          <td className="align-middle">{item?.renderedTime}</td>
-        </tr>
-      );
-    },
-    [machineQuery]
+  const totalForReview = filteredResults?.filter((item) => item.status === 2);
+  const totalCompleted = filteredResults?.filter((item) => item.status === 3);
+  const totalDetermined = filteredResults?.filter(
+    (item) => item.is_determined === 1
   );
+  const totalExtracted = filteredResults?.filter(
+    (item) => item.is_determined === 2
+  );
+
+  const rtOnDuty = useMemo(() => {
+    if (!resultsQuery) return [];
+
+    const seen = new Set();
+    return resultsQuery
+      .filter((item) => item.status > 0)
+      .map(({ respiratory_therapists }) => respiratory_therapists)
+      .filter((rt) => {
+        if (seen.has(rt)) return false;
+        seen.add(rt);
+        return true;
+      })
+      .map((rt) => ({ respiratory_therapists: rt }));
+  }, [resultsQuery]);
+
+  const renderRow = useCallback((item, index) => {
+    return (
+      <tr key={index}>
+        <td className="align-middle">
+          <Link
+            to={`./medical-records/request/view/${item?.request_id}`}
+            style={{
+              textDecoration: "none",
+              cursor: "pointer",
+              padding: 3,
+              color: "black",
+            }}
+          >
+            {item?.request_id}
+          </Link>
+        </td>
+        <td className="align-middle">
+          {item?.medical_requests_date_created_formatted}
+        </td>
+        <td className="align-middle">{item.machine_name}</td>
+        <td className="align-middle">{item?.medical_requests_time_only}</td>
+        <td className="align-middle">
+          {item?.is_determined === 1 && <Check />}
+        </td>
+        <td className="align-middle">
+          {item?.is_determined === 2 && <Close />}
+        </td>
+        <td>{item?.patient_name}</td>
+        <td className="align-middle">{item?.age}</td>
+        <td className="align-middle">{item?.sex}</td>
+        <td className="align-middle">{item?.fio2_route}</td>
+        <td className="align-middle">{item?.extracted_text?.pH}</td>
+        <td className="align-middle">{item?.extracted_text?.pCO2}</td>
+        <td className="align-middle">{item?.extracted_text?.PO2}</td>
+        <td className="align-middle">{item?.extracted_text?.HCO3}</td>
+        <td className="align-middle">{item?.extracted_text?.BE}</td>
+        <td className="align-middle">{item?.extracted_text?.SO2 ?? "-"}</td>
+        <td className="align-middle">{item?.extracted_text?.TCO2 ?? "-"}</td>
+        <td className="align-middle">{item?.respiratory_therapists}</td>
+        <td className="align-middle">{item?.results_date_created_formatted}</td>
+        <td className="align-middle">{item?.turnaround_time_hh_mm}</td>
+      </tr>
+    );
+  }, []);
+
+  const imageStyle = {
+    borderRadius: "50%",
+    height: "50px",
+    width: "50px",
+    backgroundColor: "grey",
+  };
   return (
     <div className="container-fluid">
-      <div className="row">
+      <div className="row align-items-center">
         <div className="col-2 p-2">
           <SimpleCardCounter
             icon={<FolderOpen />}
@@ -83,49 +140,73 @@ const OverviewPage = () => {
           />
         </div>
         <div className="col-6 p-2">
-          <div className="row  p-4">
-            <div className="col-12">
-              <div className="d-flex align-items-center gap-2 ">
-                <TextField
-                  label="Date From"
-                  type="date"
-                  value={date?.from}
-                  fullWidth
-                  onChange={(e) =>
-                    setDate((prev) => ({ ...prev, from: e.target.value }))
-                  }
-                  slotProps={{
-                    textField: {
-                      InputLabelProps: { shrink: true },
-                      size: "small",
-                    },
-                  }}
-                />{" "}
-                <TextField
-                  label="Date To"
-                  type="date"
-                  value={date?.to}
-                  fullWidth
-                  onChange={(e) =>
-                    setDate((prev) => ({ ...prev, to: e.target.value }))
-                  }
-                  slotProps={{
-                    textField: {
-                      InputLabelProps: { shrink: true },
-                      size: "small",
-                    },
-                  }}
-                />
-              </div>
+          <div className="row p-4">
+            <div className="col-12 d-flex align-items-center gap-2 mb-3">
+              <TextField
+                label="Date From"
+                type="date"
+                size="small"
+                value={date?.from}
+                fullWidth
+                onChange={(e) =>
+                  setDate((prev) => ({ ...prev, from: e.target.value }))
+                }
+                slotProps={{
+                  textField: {
+                    InputLabelProps: { shrink: true },
+                    size: "small",
+                  },
+                }}
+              />
+              <TextField
+                label="Date To"
+                type="date"
+                size="small"
+                value={date?.to}
+                fullWidth
+                onChange={(e) =>
+                  setDate((prev) => ({ ...prev, to: e.target.value }))
+                }
+                slotProps={{
+                  textField: {
+                    InputLabelProps: { shrink: true },
+                    size: "small",
+                  },
+                }}
+              />
+            </div>
+            <div className="col-12 d-flex align-items-center gap-2 ">
+              <SimpleAutoCompleteInput
+                data={rtOnDuty}
+                label="Respiratory Therapists on duty"
+                value={selectedRt}
+                onChange={(event, newValue) => setSelectedRt(newValue)}
+                getOptionLabel={(option) => option?.respiratory_therapists}
+              />
+              <CSVLink
+                data={filteredResults}
+                headers={headers}
+                filename={"data.csv"}
+              >
+                <Button
+                  variant="contained"
+                  disabled={filteredResults?.length === 0}
+                >
+                  Export
+                </Button>
+              </CSVLink>
             </div>
           </div>
         </div>
-        <div className="col-12  overflow-auto bg-white  table-responsive p-0">
-          <table className="table table-bordered census-table text-center p-0">
+        <div className="col-12 overflow-auto bg-white  table-responsive p-0">
+          <table
+            className="table table-bordered census-table text-center p-0"
+            style={{ tableLayout: "fixed" }}
+          >
             <thead>
               <tr>
-                <th>DATE</th>
-                <th>
+                <th style={{ width: "100px" }}>DATE</th>
+                <th style={{ width: "160px" }}>
                   <small className="fw-normal">
                     from <br /> {date.from} <br /> to <br /> {date.to}
                   </small>
@@ -134,9 +215,40 @@ const OverviewPage = () => {
                   rowSpan={6}
                   colSpan={18}
                   className="text-center align-middle"
+                  style={{ width: "2200px" }}
                 >
-                  <p>#Value!</p>
-                  <p>ARTERIAL BLOOG GAS DIAGNOSTIC PROCEDURES</p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
+                      <img src={dohLogo} style={imageStyle} alt="doh-logo" />
+                    </div>
+                    <div>
+                      <strong>Republic of the Philippines</strong>
+                      <br />
+                      <strong>DEPARTMENT OF HEALTH</strong>
+                      <br />
+                      <strong>East Avenue Medical Center</strong>
+                      <br />
+                      <br />
+                      <strong>PULMONARY SECTION</strong>
+                      <br />
+                      <strong style={{ textDecoration: "underline" }}>
+                        ARTERIAL BLOOD GAS OFFICIAL RESULT
+                      </strong>
+                    </div>
+                    <div>
+                      <img
+                        src={eastAveLogo}
+                        style={imageStyle}
+                        alt="east-ave-logo"
+                      />
+                    </div>
+                  </div>
                 </th>
               </tr>
               <tr>
@@ -149,66 +261,91 @@ const OverviewPage = () => {
               </tr>
               <tr>
                 <th>EXT</th>
-                <th></th>
+                <th>{totalExtracted?.length}</th>
               </tr>
               <tr>
                 <th>DET</th>
-                <th>#</th>
+                <th>{totalDetermined?.length}</th>
               </tr>
               <tr>
                 <th>RTOD</th>
-                <th></th>
+                <th>{selectedRt?.respiratory_therapists ?? "ALL"}</th>
               </tr>
               <tr>
-                <th rowSpan={2}>Sample Number</th>
-                <th rowSpan={2}>Date</th>
-                <th rowSpan={2}>Machine</th>
-                <th rowSpan={2}>Time Receiver</th>
-                <th rowSpan={2}>Extracted</th>
-                <th rowSpan={2}>Determined</th>
-                <th rowSpan={2}>Patient Name</th>
-                <th rowSpan={2}>Age</th>
-                <th rowSpan={2}>Gender</th>
-                <th rowSpan={2}>FIO2 Route</th>
-                <th>PH</th>
-                <th>PCO2</th>
-                <th>PO2</th>
-                <th>HC03</th>
-                <th>BE</th>
-                <th>TCO2</th>
-                <th>SA02</th>
-                <th rowSpan={2}>RTOD</th>
-                <th rowSpan={2}>Time Release</th>
-                <th>Rendered Time</th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Sample Number
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Date
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Machine
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Time Receiver
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Extracted
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Determined
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Name of patients
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Age
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Gender
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  FIO2 <br />
+                  Route
+                </th>
+                <th className="text-uppercase align-middle">PH</th>
+                <th className="text-uppercase align-middle">PCO2</th>
+                <th className="text-uppercase align-middle">PO2</th>
+                <th className="text-uppercase align-middle">HC03</th>
+                <th className="text-uppercase align-middle">BE</th>
+                <th className="text-uppercase align-middle">TCO2</th>
+                <th className="text-uppercase align-middle">SA02</th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  RTOD
+                </th>
+                <th rowSpan={2} className="text-uppercase align-middle">
+                  Time Release
+                </th>
+                <th className="text-uppercase align-middle">Rendered Time</th>
               </tr>
               <tr>
-                <th style={{ width: "70px", maxWidth: "70px" }}>
+                <th className="text-uppercase align-middle">
                   <small className="fw-light">7.35-7.45 mmHg</small>
                 </th>
-                <th style={{ width: "70px", maxWidth: "70px" }}>
+                <th className="text-uppercase align-middle">
                   <small className="fw-light">35-45 mmHg</small>
                 </th>
-                <th style={{ width: "70px", maxWidth: "70px" }}>
+                <th className="text-uppercase align-middle">
                   <small className="fw-light">80-100 mmHg</small>
                 </th>
-                <th style={{ width: "70px", maxWidth: "70px" }}>
+                <th className="text-uppercase align-middle">
                   <small className="fw-light">22-26 mEq/L</small>
                 </th>
-                <th style={{ width: "70px", maxWidth: "70px" }}>
+                <th className="text-uppercase align-middle">
                   <small className="fw-light">-2-+2 mEq/L</small>
                 </th>
-                <th>
+                <th className="text-uppercase align-middle">
                   <small className="fw-light">23-29 mmol/L</small>
                 </th>
-                <th style={{ width: "70px", maxWidth: "70px" }}>
+                <th className="text-uppercase align-middle">
                   <small className="fw-light">95% - 100%</small>
                 </th>
-                <th>HH:MM</th>
+                <th className="text-uppercase align-middle">HH:MM</th>
               </tr>
             </thead>
             <tbody>
-              {!resultIsLoading && Array.isArray(resultsQuery) ? (
-                resultsQuery.map((item, index) => renderRow(item, index))
+              {!resultIsLoading && Array.isArray(filteredResults) ? (
+                filteredResults.map((item, index) => renderRow(item, index))
               ) : (
                 <tr>
                   <td colSpan={20} className="text-center">

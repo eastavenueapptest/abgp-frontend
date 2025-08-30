@@ -6,7 +6,7 @@ import { formatStatus } from "../../../utils/formatStatus";
 const columns = [
   { id: "id", label: "ID" },
   { id: "patient_name", label: "Name" },
-  { id: "date_created", label: "Date" },
+  { id: "date_created_formatted", label: "Date" },
   { id: "status", label: "Document Status" },
   { id: "is_deleted", label: "Active Status" },
 ];

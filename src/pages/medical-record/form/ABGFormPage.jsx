@@ -222,7 +222,7 @@ const ABGFormPage = () => {
               onhandlePreview={handlePreviewForm}
               label={"patient_name"}
               status={"status"}
-              date={"date_created_formatted"}
+              date={"results_date_created_formatted"}
               longText={"diagnosis"}
               items={filteredResults}
             />
