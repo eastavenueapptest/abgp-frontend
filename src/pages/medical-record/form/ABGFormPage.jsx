@@ -1,4 +1,5 @@
 import { Button, TextField } from "@mui/material";
+import moment from "moment";
 import { useEffect, useMemo, useRef, useState } from "react";
 import useCreateEmail from "../../../hooks/email/use-create-email";
 import useEditMedicalResult from "../../../hooks/medical-record/use-edit-medical-result";
@@ -13,12 +14,14 @@ import ResultForm from "../components/ResultForm";
 import StatusList from "../components/StatusList";
 
 const ABGFormPage = () => {
-  const datetime = new Date().toISOString().split("T")[0];
+  const now = moment().utcOffset(8).format("YYYY-MM-DDTHH:mm");
+
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [date, setDate] = useState({
-    from: datetime,
-    to: datetime,
+    from: now,
+    to: now,
   });
+
   const [selectedResultId, setSelectedResultId] = useState(null);
   const [fields, setFields] = useState(null);
   const resultFormRef = useRef();
@@ -170,7 +173,7 @@ const ABGFormPage = () => {
             <TextField
               size="small"
               label="Date From"
-              type="date"
+              type="datetime-local"
               value={date?.from}
               fullWidth
               onChange={(e) =>
@@ -188,7 +191,7 @@ const ABGFormPage = () => {
             <TextField
               size="small"
               label="Date To"
-              type="date"
+              type="datetime-local"
               value={date?.to}
               fullWidth
               onChange={(e) =>
