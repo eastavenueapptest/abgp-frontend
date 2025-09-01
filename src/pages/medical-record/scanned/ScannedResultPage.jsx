@@ -24,7 +24,7 @@ const ScannedResultPage = () => {
   const [result, setResult] = useState([]);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [selectedMachine, setSelectedMachine] = useState(null);
-
+  const [selectedValue, setSelectedValue] = useState(null);
   const { isLoading: isRequestLoading } = useCreateMedicalResult(input);
 
   const patientName = useMemo(() => {
@@ -55,6 +55,10 @@ const ScannedResultPage = () => {
     }
   };
 
+  const handleIsDetermined = (event) => {
+    setSelectedValue(event.target.value);
+  };
+
   const { user } = useAuthContext();
   const employee = user?.user;
 
@@ -68,6 +72,7 @@ const ScannedResultPage = () => {
       rtId: employee?.id,
       machineId: selectedMachine?.id,
       extractedText: abgFields,
+      isDetermined: Number(selectedValue),
     });
 
     if (!isGetRequestLoading) {
@@ -191,25 +196,31 @@ const ScannedResultPage = () => {
           </div>
           <div className="col-lg-12 p-2">
             <div className="d-flex justify-content-between p-0">
-              <RadioGroup row>
+              <RadioGroup
+                row
+                value={selectedValue}
+                onChange={handleIsDetermined}
+              >
                 <FormControlLabel
-                  value="1"
+                  value={1}
                   control={<Radio />}
                   label="Determined"
                 />
                 <FormControlLabel
-                  value="2"
+                  value={2}
                   control={<Radio />}
                   label="Extracted"
                 />
               </RadioGroup>
+
               <Button
                 type="button"
                 variant="contained"
                 disabled={
                   result?.length === 0 ||
                   !selectedPatient?.id ||
-                  !selectedMachine?.id
+                  !selectedMachine?.id ||
+                  selectedValue === null
                 }
                 onClick={handleSubmit}
                 sx={{

@@ -6,7 +6,7 @@ const useGetSession = () => {
   const [error, setError] = useState(null);
   const fetchData = async () => {
     try {
-      const user = sessionStorage.getItem("user");
+      const user = localStorage.getItem("user");
       setData({ user: JSON.parse(user) });
     } catch (error) {
       setError(error.message);

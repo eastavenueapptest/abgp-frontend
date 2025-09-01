@@ -30,6 +30,7 @@ export const useLogoutUser = () => {
       toast.success("Logging you out");
 
       setTimeout(() => {
+        localStorage.removeItem("user");
         navigate("/login");
       }, 3000);
     } catch (error) {
