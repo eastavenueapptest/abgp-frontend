@@ -93,7 +93,7 @@ const OverviewPage = () => {
         <td className="align-middle">
           {item?.is_determined === 2 && <Close />}
         </td>
-        <td>{item?.patient_name}</td>
+        <td className="align-middle">{item?.patient_name}</td>
         <td className="align-middle">{item?.age}</td>
         <td className="align-middle">{item?.sex}</td>
         <td className="align-middle">{item?.fio2_route}</td>
