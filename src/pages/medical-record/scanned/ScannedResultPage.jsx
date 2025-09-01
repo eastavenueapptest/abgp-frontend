@@ -143,7 +143,13 @@ const ScannedResultPage = () => {
                 sx={{
                   textTransform: "capitalize",
                 }}
-                disabled={!image && result.length === 0 && !selectedPatient}
+                disabled={
+                  !image &&
+                  result.length === 0 &&
+                  !selectedPatient &&
+                  !selectedMachine &&
+                  !selectedValue
+                }
                 onClick={handleClear}
               >
                 Clear
