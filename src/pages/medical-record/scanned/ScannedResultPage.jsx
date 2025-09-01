@@ -95,6 +95,7 @@ const ScannedResultPage = () => {
     setInput(null);
     setSelectedPatient(null);
     setSelectedMachine(null);
+    setSelectedValue(null);
     document.getElementById("imageInput").value = "";
   };
 
