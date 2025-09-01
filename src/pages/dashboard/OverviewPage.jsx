@@ -1,7 +1,7 @@
 import { Check, Close, FolderOpen, Search } from "@mui/icons-material";
 import { Button, TextField } from "@mui/material";
 import { useCallback, useMemo, useState } from "react";
-import { CSVLink } from "react-csv";
+// import { CSVLink } from "react-csv";
 import { Link } from "react-router-dom";
 import useGetMedicalResults from "../../hooks/medical-record/use-get-medical-results";
 import SimpleCardCounter from "../../shared-components/cards/SimpleCardCounter";
@@ -9,6 +9,7 @@ import SimpleAutoCompleteInput from "../../shared-components/fields/SimpleAutoCo
 
 import dohLogo from "../../assets/images/brand/dohLogo.png";
 import eastAveLogo from "../../assets/images/brand/eastAveLogo.png";
+import ExportToExcel from "../../hooks/overview/use-export-excel";
 const OverviewPage = () => {
   const [selectedRt, setSelectedRt] = useState(null);
   const datetime = new Date().toISOString().split("T")[0];
@@ -75,8 +76,7 @@ const OverviewPage = () => {
               cursor: "pointer",
               padding: 3,
               color: "black",
-            }}
-          >
+            }}>
             {item?.request_id}
           </Link>
         </td>
@@ -183,26 +183,31 @@ const OverviewPage = () => {
                 onChange={(event, newValue) => setSelectedRt(newValue)}
                 getOptionLabel={(option) => option?.respiratory_therapists}
               />
-              <CSVLink
+              {/* <CSVLink
                 data={filteredResults}
                 headers={headers}
-                filename={"data.csv"}
-              >
+                filename={"data.csv"}>
                 <Button
                   variant="contained"
-                  disabled={filteredResults?.length === 0}
-                >
+                  disabled={filteredResults?.length === 0}>
                   Export
                 </Button>
-              </CSVLink>
+              </CSVLink> */}
+              <ExportToExcel
+                data={filteredResults}
+                dateFromTo={date}
+                total={totalResultCollected?.length}
+                ext={totalExtracted?.length}
+                det={totalDetermined?.length}
+                rtod={selectedRt?.respiratory_therapists ?? "ALL"}
+              />
             </div>
           </div>
         </div>
         <div className="col-12 overflow-auto bg-white  table-responsive p-0">
           <table
             className="table table-bordered census-table text-center p-0"
-            style={{ tableLayout: "fixed" }}
-          >
+            style={{ tableLayout: "fixed" }}>
             <thead>
               <tr>
                 <th style={{ width: "100px" }}>DATE</th>
@@ -215,15 +220,13 @@ const OverviewPage = () => {
                   rowSpan={6}
                   colSpan={18}
                   className="text-center align-middle"
-                  style={{ width: "2200px" }}
-                >
+                  style={{ width: "2200px" }}>
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                    }}
-                  >
+                    }}>
                     <div>
                       <img src={dohLogo} style={imageStyle} alt="doh-logo" />
                     </div>
