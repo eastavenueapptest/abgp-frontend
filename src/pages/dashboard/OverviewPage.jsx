@@ -1,5 +1,6 @@
 import { Check, Close, FolderOpen, Search } from "@mui/icons-material";
 import { Button, TextField } from "@mui/material";
+import moment from "moment";
 import { useCallback, useMemo, useState } from "react";
 import { CSVLink } from "react-csv";
 import { Link } from "react-router-dom";
@@ -10,11 +11,12 @@ import SimpleAutoCompleteInput from "../../shared-components/fields/SimpleAutoCo
 import dohLogo from "../../assets/images/brand/dohLogo.png";
 import eastAveLogo from "../../assets/images/brand/eastAveLogo.png";
 const OverviewPage = () => {
+  const now = moment().utcOffset(8).format("YYYY-MM-DDTHH:mm");
+
   const [selectedRt, setSelectedRt] = useState(null);
-  const datetime = new Date().toISOString().split("T")[0];
   const [date, setDate] = useState({
-    from: datetime,
-    to: datetime,
+    from: now,
+    to: now,
   });
 
   const { data: resultsQuery, isLoading: resultIsLoading } =
@@ -144,7 +146,7 @@ const OverviewPage = () => {
             <div className="col-12 d-flex align-items-center gap-2 mb-3">
               <TextField
                 label="Date From"
-                type="date"
+                type="datetime-local"
                 size="small"
                 value={date?.from}
                 fullWidth
@@ -160,7 +162,7 @@ const OverviewPage = () => {
               />
               <TextField
                 label="Date To"
-                type="date"
+                type="datetime-local"
                 size="small"
                 value={date?.to}
                 fullWidth
