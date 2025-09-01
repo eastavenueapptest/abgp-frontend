@@ -1,8 +1,7 @@
 import { Check, Close, FolderOpen, Search } from "@mui/icons-material";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import moment from "moment";
-import { useCallback, useMemo, useState } from "react";
-// import { CSVLink } from "react-csv";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import useGetMedicalResults from "../../hooks/medical-record/use-get-medical-results";
 import SimpleCardCounter from "../../shared-components/cards/SimpleCardCounter";
@@ -20,6 +19,11 @@ const OverviewPage = () => {
     to: now,
   });
 
+  const [shift, setShift] = useState(() => ({
+    from: moment(date.from, "YYYY-MM-DDTHH:mm").format("hh:mm A"),
+    to: moment(date.to, "YYYY-MM-DDTHH:mm").format("hh:mm A"),
+  }));
+
   const { data: resultsQuery, isLoading: resultIsLoading } =
     useGetMedicalResults({
       from: date.from,
@@ -33,12 +37,6 @@ const OverviewPage = () => {
     );
   }, [resultsQuery, selectedRt]);
 
-  const headers = [
-    { label: "Sample Number", key: "request_id" },
-    { label: "Date", key: "medical_requests_date_created_formatted" },
-    { label: "Machine", key: "machine_name" },
-    { label: "Time Receiver", key: "medical_requests_time_only" },
-  ];
   const totalResultCollected = filteredResults?.filter((item) =>
     [2, 3].includes(item.status)
   );
@@ -78,7 +76,8 @@ const OverviewPage = () => {
               cursor: "pointer",
               padding: 3,
               color: "black",
-            }}>
+            }}
+          >
             {item?.request_id}
           </Link>
         </td>
@@ -117,6 +116,13 @@ const OverviewPage = () => {
     width: "50px",
     backgroundColor: "grey",
   };
+
+  useEffect(() => {
+    setShift({
+      from: moment(date.from, "YYYY-MM-DDTHH:mm").format("hh:mm A"),
+      to: moment(date.to, "YYYY-MM-DDTHH:mm").format("hh:mm A"),
+    });
+  }, [date.from, date.to]);
   return (
     <div className="container-fluid">
       <div className="row align-items-center">
@@ -185,19 +191,11 @@ const OverviewPage = () => {
                 onChange={(event, newValue) => setSelectedRt(newValue)}
                 getOptionLabel={(option) => option?.respiratory_therapists}
               />
-              {/* <CSVLink
-                data={filteredResults}
-                headers={headers}
-                filename={"data.csv"}>
-                <Button
-                  variant="contained"
-                  disabled={filteredResults?.length === 0}>
-                  Export
-                </Button>
-              </CSVLink> */}
+
               <ExportToExcel
                 data={filteredResults}
-                dateFromTo={date}
+                shift={`${shift?.from} to ${shift?.to}`}
+                dateFromTo={`from ${date?.from} to ${date?.to}`}
                 total={totalResultCollected?.length}
                 ext={totalExtracted?.length}
                 det={totalDetermined?.length}
@@ -209,26 +207,30 @@ const OverviewPage = () => {
         <div className="col-12 overflow-auto bg-white  table-responsive p-0">
           <table
             className="table table-bordered census-table text-center p-0"
-            style={{ tableLayout: "fixed" }}>
+            style={{ tableLayout: "fixed" }}
+          >
             <thead>
               <tr>
                 <th style={{ width: "100px" }}>DATE</th>
                 <th style={{ width: "160px" }}>
                   <small className="fw-normal">
-                    from <br /> {date.from} <br /> to <br /> {date.to}
+                    from <br /> {moment(date.from).format("YYYY/MM/DD")} <br />{" "}
+                    to <br /> {moment(date.to).format("YYYY/MM/DD")}
                   </small>
                 </th>
                 <th
                   rowSpan={6}
                   colSpan={18}
                   className="text-center align-middle"
-                  style={{ width: "2200px" }}>
+                  style={{ width: "2200px" }}
+                >
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                    }}>
+                    }}
+                  >
                     <div>
                       <img src={dohLogo} style={imageStyle} alt="doh-logo" />
                     </div>
@@ -258,7 +260,11 @@ const OverviewPage = () => {
               </tr>
               <tr>
                 <th>SHIFT</th>
-                <th></th>
+                <th>
+                  <small className="fw-normal">
+                    {shift?.from} to {shift?.to}
+                  </small>
+                </th>
               </tr>
               <tr>
                 <th>TOTAL</th>

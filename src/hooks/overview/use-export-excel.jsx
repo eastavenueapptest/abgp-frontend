@@ -1,10 +1,10 @@
-// ExportToExcel.jsx
 import { Button } from "@mui/material";
 import * as XLSX from "xlsx-js-style";
 
 const ExportToExcel = ({
   data,
   fileName = "Report.xlsx",
+  shift,
   dateFromTo,
   total,
   ext,
@@ -12,22 +12,17 @@ const ExportToExcel = ({
   rtod,
 }) => {
   const handleExport = () => {
-    console.log("EXPORT");
-    console.log(data);
-    // Create a new workbook
     const wb = XLSX.utils.book_new();
 
-    // Extra info rows (before headers)
     const leftTopRows = [
-      ["DATE:", `from ${dateFromTo?.from} to ${dateFromTo?.to}` || "N/A"], // replace with props/values
-      ["SHIFT:", "N/A"],
+      ["DATE:", dateFromTo || "N/A"], // replace with props/values
+      ["SHIFT:", shift || "N/A"],
       ["TOTAL:", total || "N/A"],
       ["EXT:", ext || "N/A"],
       ["DET:", det || "N/A"],
       ["RTOD:", rtod || "N/A"],
     ];
 
-    // Define headers
     const mainHeader = [
       "SAMPLE NUMBER",
       "DATE",
@@ -54,7 +49,7 @@ const ExportToExcel = ({
 
     const subHeaders = [
       "",
-      "", // 👈 Subheader for DATE
+      "",
       "",
       "",
       "",
@@ -76,19 +71,16 @@ const ExportToExcel = ({
       "HH:MM",
     ];
 
-    // Rows from data
     const rows = data.map((item) => [
       item.request_id || "",
       item.medical_requests_date_created_formatted || "",
       item.machine_name || "",
       item.medical_requests_time_only || "",
-      //   EXTRACTED LOGIC
       item.is_determined === 1
         ? "✔️"
         : item.extracted_text === 1 && item.is_determined === 2
           ? "❌"
           : "",
-      //   DETERMINED LOGIC
       item.is_determined === 2
         ? "❌"
         : item.extracted_text === 1 && item.is_determined === 1
@@ -111,53 +103,30 @@ const ExportToExcel = ({
       item.turnaround_time_hh_mm || "",
     ]);
 
-    // Combine everything
     const worksheetData = [...leftTopRows, mainHeader, subHeaders, ...rows];
 
-    // Create worksheet
     const ws = XLSX.utils.aoa_to_sheet(worksheetData);
 
-    // Merge headers (only for header rows)
-    // Merge headers (only for header rows)
     const headerStartRow = leftTopRows.length;
     const headerEndRow = headerStartRow + 1;
 
-    // Define which columns to merge (based on your original intent)
-    const columnsToMerge = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9, // first 10 columns
-      17,
-      18,
-      19, // last 3 columns
-    ];
+    const columnsToMerge = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 19];
 
-    // Build dynamic merge array for headers
     const headerMerges = columnsToMerge.map((colIndex) => ({
       s: { r: headerStartRow, c: colIndex },
       e: { r: headerEndRow, c: colIndex },
     }));
 
-    // Merge B1:C6 for info rows
     const infoRowMerges = Array.from(
       { length: leftTopRows.length },
       (_, i) => ({
-        s: { r: i, c: 1 }, // column B
-        e: { r: i, c: 2 }, // column C
+        s: { r: i, c: 1 },
+        e: { r: i, c: 2 },
       })
     );
 
-    // Combine all merges
     ws["!merges"] = [...headerMerges, ...infoRowMerges];
 
-    // Style every cell
     const range = XLSX.utils.decode_range(ws["!ref"]);
     infoRowMerges.forEach(({ s, e }) => {
       const startCell = XLSX.utils.encode_cell(s);
@@ -174,7 +143,6 @@ const ExportToExcel = ({
         const isMainHeader = R === headerStartRow;
         const isSubHeader = R === headerEndRow;
 
-        // Apply bold only to column A in info rows
         const fontStyle = isMainHeader
           ? { bold: true, sz: 12 }
           : isInfoRow
@@ -183,13 +151,11 @@ const ExportToExcel = ({
               ? { sz: 9 }
               : { sz: 11 };
 
-        // Apply fill only to header rows
         const fillStyle =
           isMainHeader || isSubHeader
             ? { fgColor: { rgb: "D9E1F2" } }
             : undefined;
 
-        // Apply border to all info row cells, including merged columns B and C
         const applyBorder =
           isMainHeader || isSubHeader || isInfoRow || R >= headerEndRow;
 
@@ -214,18 +180,18 @@ const ExportToExcel = ({
       }
     }
 
-    // Append worksheet to workbook
     XLSX.utils.book_append_sheet(wb, ws, "Report");
 
-    // Export file
     XLSX.writeFile(wb, fileName);
   };
 
   return (
     <Button
+      disabled={data?.length === 0}
       variant="contained"
       sx={{ textTransform: "capitalize" }}
-      onClick={handleExport}>
+      onClick={handleExport}
+    >
       Export
     </Button>
   );
