@@ -59,7 +59,9 @@ const SimpleForm = ({
 
       {fields.map((field) => (
         <div key={field.name} className="col-12 mb-3 p-0">
-          {field.type === "text" || field.type === "number" ? (
+          {field.type === "text" ||
+          field.type === "email" ||
+          field.type === "number" ? (
             <TextField
               size="small"
               fullWidth

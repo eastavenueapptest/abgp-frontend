@@ -24,6 +24,7 @@ import ProtectedRoute from "./helpers/routes/ProtectedRoute";
 import { useAuthContext } from "./hooks/context/AuthContext";
 import Error404Page from "./pages/block/Error404Page";
 import LoadingScreen from "./pages/block/LoadingScreen";
+import ResetPage from "./pages/login/Resetpage";
 import UpdatePasswordPage from "./pages/users/UpdatePasswordPage";
 import ViewUserPage from "./pages/users/ViewUserPage";
 import SystemThemes from "./styles/SystemThemes";
@@ -178,6 +179,15 @@ const App = () => {
           </ThemeProvider>
         }
       />
+      <Route
+        path="/setup-new-password"
+        element={
+          <ThemeProvider theme={SystemThemes}>
+            <ResetPage />
+          </ThemeProvider>
+        }
+      />
+
       <Route path="*" element={<Error404Page />} />
     </Routes>
   );

@@ -5,6 +5,7 @@ import { formatActiveStatus } from "../../utils/formatActiveStatus";
 const columns = [
   { id: "employee_name", label: "Name" },
   { id: "employee_number", label: "Employee Number" },
+  { id: "email_address", label: "Email" },
   { id: "position_name", label: "Position" },
   { id: "is_deleted", label: "Status" },
 ];

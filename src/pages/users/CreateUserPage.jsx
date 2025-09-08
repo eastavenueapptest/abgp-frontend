@@ -12,6 +12,7 @@ const CreateUsertPage = () => {
   const items = [
     { textLabel: "Employee Name", type: "text", name: "employeeName" },
     { textLabel: "Employee Number", type: "number", name: "employeeNumber" },
+    { textLabel: "Email Address", type: "email", name: "emailAddress" },
     { textLabel: "Username", type: "text", name: "username" },
     { textLabel: "Password", type: "password", name: "password" },
     {

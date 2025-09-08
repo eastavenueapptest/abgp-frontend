@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 
+import { Chip } from "@mui/material";
 import useGetPositions from "../../hooks/position/use-get-positions";
 import useDeleteUser from "../../hooks/users/use-delete-user";
 import useEditUser from "../../hooks/users/use-edit-user";
@@ -23,6 +24,7 @@ const ViewUserPage = () => {
       password,
       position_id,
       is_deleted,
+      email_address,
     }) => ({
       employee_name,
       employee_number,
@@ -30,10 +32,10 @@ const ViewUserPage = () => {
       password,
       position_id,
       is_deleted,
+      email_address,
     })
   );
   const currentUser = user?.[0];
-
   const handleSubmit = (formData) => {
     editUser(id, formData);
   };
@@ -49,10 +51,15 @@ const ViewUserPage = () => {
   const jobOptions = position.map(({ id, type }) => {
     return { id, label: type, value: id };
   });
-
+  const adminItems = [
+    { name: "employee_name", label: "Employee Name", type: "text" },
+    { name: "email_address", label: "Email Address", type: "email" },
+    { name: "username", label: "Username", type: "text" },
+  ];
   const items = [
     { name: "employee_name", label: "Employee Name", type: "text" },
     { name: "employee_number", label: "Employee Number", type: "number" },
+    { name: "email_address", label: "Email Address", type: "email" },
     { name: "username", label: "Username", type: "text" },
     { name: "password", label: "Password", type: "password" },
     {
@@ -69,15 +76,34 @@ const ViewUserPage = () => {
         <div className="col-6">
           <SimpleViewForm
             title={
-              <div>User Info {formatActiveStatus(currentUser?.is_deleted)}</div>
+              <div>
+                User Info {formatActiveStatus(currentUser?.is_deleted)}{" "}
+                {currentUser?.position_id === 5 && (
+                  <Chip
+                    label={"Admin Account Limited Info"}
+                    color="default"
+                    size="small"
+                    variant="contained"
+                    sx={{ p: 1 }}
+                  />
+                )}
+              </div>
             }
             items={user}
             onSubmit={handleSubmit}
-            onDelete={currentUser?.is_deleted === 0 ? handleDelete : null}
+            onDelete={
+              currentUser?.is_deleted !== 0 || currentUser?.position_id === 5
+                ? null
+                : handleDelete
+            }
             isLoading={isEditUserLoading || isGetUserLoading}
             returnTo={"../users"}
-            fields={items}
-            showSubmit={currentUser?.is_deleted === 1 ? false : true}
+            fields={currentUser?.position_id === 5 ? adminItems : items}
+            showSubmit={
+              currentUser?.is_deleted === 1 || currentUser?.position_id === 5
+                ? false
+                : true
+            }
           />
         </div>
       </div>
