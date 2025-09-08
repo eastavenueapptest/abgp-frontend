@@ -14,7 +14,7 @@ const useGetUserByUsername = (username) => {
         const response = await fetch(
           `${server}/api/emails/generate-secret-key/${username}`,
           {
-            method: "POST",
+            method: "GET",
             headers: {
               "Content-Type": "application/json",
             },
