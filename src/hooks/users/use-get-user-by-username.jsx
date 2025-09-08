@@ -12,7 +12,14 @@ const useGetUserByUsername = (username) => {
     const fetchRequest = async () => {
       try {
         const response = await fetch(
-          `${server}/api/emails/generate-secret-key/${username}`
+          `${server}/api/emails/generate-secret-key/${username}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            credentials: "include",
+          }
         );
         if (!response.ok) {
           throw new Error("Failed to fetch user");
