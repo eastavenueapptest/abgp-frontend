@@ -21,7 +21,9 @@ const ABGFormPage = () => {
     from: now,
     to: now,
   });
-
+  const adjustedToDate = moment(date.to)
+    .add(1, "seconds")
+    .format("YYYY-MM-DDTHH:mm");
   const [selectedResultId, setSelectedResultId] = useState(null);
   const [fields, setFields] = useState(null);
   const resultFormRef = useRef();
@@ -33,7 +35,7 @@ const ABGFormPage = () => {
     refetch: refetchMedicalResults,
   } = useGetMedicalResults({
     from: date.from,
-    to: date.to,
+    to: adjustedToDate,
   });
   const { data: userPhysicianQuery, isLoading: isPhysicianDoctorLoading } =
     useGetPhysicianDoctor();

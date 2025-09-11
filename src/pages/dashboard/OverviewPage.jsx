@@ -24,10 +24,13 @@ const OverviewPage = () => {
     to: moment(date.to, "YYYY-MM-DDTHH:mm").format("hh:mm A"),
   }));
 
+  const adjustedToDate = moment(date.to)
+    .add(1, "seconds")
+    .format("YYYY-MM-DDTHH:mm");
   const { data: resultsQuery, isLoading: resultIsLoading } =
     useGetMedicalResults({
       from: date.from,
-      to: date.to,
+      to: adjustedToDate,
     });
 
   const filteredResults = useMemo(() => {
