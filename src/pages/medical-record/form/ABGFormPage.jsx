@@ -244,46 +244,50 @@ const ABGFormPage = () => {
         {selectedResultId && (
           <div className="mb-3 d-flex align-items-center gap-3">
             <div className="flex-shrink-1">
-              <Button
-                variant="contained"
-                sx={{
-                  textTransform: "capitalize",
-                }}
-                disabled={specificResulIsLoading}
-                onClick={handlePrint}
-              >
-                Print {specificResulIsLoading}
-              </Button>
+              {[2, 5].includes(user?.position_id) && (
+                <Button
+                  variant="contained"
+                  sx={{
+                    textTransform: "capitalize",
+                  }}
+                  disabled={specificResulIsLoading}
+                  onClick={handlePrint}
+                >
+                  Print {specificResulIsLoading}
+                </Button>
+              )}
             </div>
-            {specificResultQuery?.status === 2 && (
-              <div className="flex-shrink-1">
-                <Button
-                  variant="contained"
-                  sx={{
-                    textTransform: "capitalize",
-                  }}
-                  disabled={specificResulIsLoading}
-                  onClick={handleComplete}
-                >
-                  Mark as Complete
-                </Button>
-              </div>
-            )}
-            {specificResultQuery?.status === 3 && (
-              <div className="flex-shrink-1">
-                <Button
-                  variant="contained"
-                  sx={{
-                    textTransform: "capitalize",
-                  }}
-                  disabled={specificResulIsLoading}
-                  onClick={handleSendEmail}
-                >
-                  Email to Department{" "}
-                </Button>
-              </div>
-            )}
-            {[3, 4, 5].includes(user?.position_id) && (
+            {[2, 5].includes(user?.position_id) &&
+              specificResultQuery?.status === 2 && (
+                <div className="flex-shrink-1">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      textTransform: "capitalize",
+                    }}
+                    disabled={specificResulIsLoading}
+                    onClick={handleComplete}
+                  >
+                    Mark as Complete
+                  </Button>
+                </div>
+              )}
+            {[2, 5].includes(user?.position_id) &&
+              specificResultQuery?.status === 3 && (
+                <div className="flex-shrink-1">
+                  <Button
+                    variant="contained"
+                    sx={{
+                      textTransform: "capitalize",
+                    }}
+                    disabled={specificResulIsLoading}
+                    onClick={handleSendEmail}
+                  >
+                    Email to Department{" "}
+                  </Button>
+                </div>
+              )}
+            {[4, 5].includes(user?.position_id) && (
               <div className="flex-shrink-1">
                 <SimpleModal
                   open={isModalOpen}
