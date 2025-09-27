@@ -167,6 +167,7 @@ const ABGFormPage = () => {
     return <div>Loading...</div>;
   }
 
+  console.log(specificResultQuery);
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -340,10 +341,11 @@ const ABGFormPage = () => {
                   ward: "",
                   diagnosis: specificResultQuery?.diagnosis,
                   physician: specificResultQuery?.physician_doctor,
-                  time: "",
+                  date: specificResultQuery?.date,
+                  time: specificResultQuery?.time,
                   temp: "",
                   hgb: fields?.HGB,
-                  fio2: fields?.FIO2,
+                  fio2: specificResultQuery?.fio2_route,
                   pH: fields?.pH,
                   pco2: fields?.pCO2,
                   po2: fields?.PO2,

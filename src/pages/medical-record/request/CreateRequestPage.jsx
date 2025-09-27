@@ -34,6 +34,7 @@ const CreateRequestPage = () => {
         value: id,
       })),
     },
+    { textLabel: "Ward", type: "text", name: "ward" },
     { textLabel: "Fio2 Route", type: "text", name: "fio2Route" },
   ];
 
@@ -51,6 +52,7 @@ const CreateRequestPage = () => {
       ...newValue.reduce((acc, item) => ({ ...acc, ...item }), {}),
       requestor: session?.user?.id,
     };
+    console.log(finalData);
     setInput(finalData);
   };
 

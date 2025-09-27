@@ -28,6 +28,7 @@ const ViewRequestPage = () => {
       fio2_route,
       status,
       is_deleted,
+      ward,
     }) => ({
       patient_name,
       age,
@@ -37,6 +38,7 @@ const ViewRequestPage = () => {
       fio2_route,
       status,
       is_deleted,
+      ward,
     })
   );
 
@@ -78,6 +80,7 @@ const ViewRequestPage = () => {
       type: "autocomplete",
       options: physicianOptions,
     },
+    { textLabel: "Ward", type: "text", name: "ward" },
     { name: "fio2_route", label: "Fio2 Route", type: "text" },
   ];
 
