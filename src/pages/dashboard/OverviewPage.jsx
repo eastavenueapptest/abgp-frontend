@@ -15,7 +15,7 @@ const OverviewPage = () => {
 
   const [selectedRt, setSelectedRt] = useState(null);
   const [date, setDate] = useState({
-    from: now,
+    from: moment().utcOffset(8).subtract(1, "month").format("YYYY-MM-DDTHH:mm"),
     to: now,
   });
 

@@ -10,17 +10,20 @@ import useGetPhysicianDoctor from "../../../hooks/users/use-get-physician-doctor
 import SimpleAutoCompleteInput from "../../../shared-components/fields/SimpleAutoCompleteInput";
 import SimpleForm from "../../../shared-components/fields/SimpleViewForm";
 import SimpleModal from "../../../shared-components/modals/SimpleModal";
+import { useAuthInfo } from "../../../utils/useAuthInfo";
 import ResultForm from "../components/ResultForm";
 import StatusList from "../components/StatusList";
 
 const ABGFormPage = () => {
+  const user = useAuthInfo();
   const now = moment().utcOffset(8).format("YYYY-MM-DDTHH:mm");
 
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [date, setDate] = useState({
-    from: now,
+    from: moment().utcOffset(8).subtract(1, "month").format("YYYY-MM-DDTHH:mm"),
     to: now,
   });
+
   const adjustedToDate = moment(date.to)
     .add(1, "seconds")
     .format("YYYY-MM-DDTHH:mm");
@@ -163,6 +166,7 @@ const ABGFormPage = () => {
   if (resultIsLoading) {
     return <div>Loading...</div>;
   }
+
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">
@@ -278,36 +282,38 @@ const ABGFormPage = () => {
                 </Button>
               </div>
             )}
-            <div className="flex-shrink-1">
-              <SimpleModal
-                open={isModalOpen}
-                onOpen={handleOpenModal}
-                onClose={handleCloseModal}
-                body={
-                  !specificResulIsLoading &&
-                  specificResultQuery && (
-                    <div className="mb-3 px-3">
-                      <SimpleForm
-                        subtitle={`Update patient ${specificResultQuery?.patient_name}'s result Interpretation`}
-                        fields={items}
-                        defaultValues={{
-                          interpreted_by: specificResultQuery?.interpreted_by,
-                          interpreted_message:
-                            specificResultQuery?.interpreted_message,
-                        }}
-                        onSubmit={(formData) => {
-                          handleUpdateInterpretation(formData);
-                          handleCloseModal();
-                        }}
-                        isLoading={
-                          isEditResultLoading || isPhysicianDoctorLoading
-                        }
-                      />
-                    </div>
-                  )
-                }
-              />
-            </div>
+            {[3, 4, 5].includes(user?.position_id) && (
+              <div className="flex-shrink-1">
+                <SimpleModal
+                  open={isModalOpen}
+                  onOpen={handleOpenModal}
+                  onClose={handleCloseModal}
+                  body={
+                    !specificResulIsLoading &&
+                    specificResultQuery && (
+                      <div className="mb-3 px-3">
+                        <SimpleForm
+                          subtitle={`Update patient ${specificResultQuery?.patient_name}'s result Interpretation`}
+                          fields={items}
+                          defaultValues={{
+                            interpreted_by: specificResultQuery?.interpreted_by,
+                            interpreted_message:
+                              specificResultQuery?.interpreted_message,
+                          }}
+                          onSubmit={(formData) => {
+                            handleUpdateInterpretation(formData);
+                            handleCloseModal();
+                          }}
+                          isLoading={
+                            isEditResultLoading || isPhysicianDoctorLoading
+                          }
+                        />
+                      </div>
+                    )
+                  }
+                />
+              </div>
+            )}
           </div>
         )}
         <div className="border  mb-3 d-flex align-items-center">
