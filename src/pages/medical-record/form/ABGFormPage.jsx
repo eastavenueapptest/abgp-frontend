@@ -342,7 +342,7 @@ const ABGFormPage = () => {
                   ageGender:
                     `${specificResultQuery?.age} / ${specificResultQuery?.sex}` ??
                     "",
-                  ward: "",
+                  ward: specificResultQuery?.ward,
                   diagnosis: specificResultQuery?.diagnosis,
                   physician: specificResultQuery?.physician_doctor,
                   date: specificResultQuery?.date,
