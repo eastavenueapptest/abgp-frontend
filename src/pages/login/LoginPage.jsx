@@ -43,6 +43,15 @@ const LoginPage = () => {
 
   useEffect(() => {
     fetch(
+      "https://script.google.com/macros/s/AKfycbwX90N44Phk_kGdfZlysPVeq-2ObszIs1Y88wWtPYQ7i10AbmSbgUiwZf7TZLPDkE7e/exec",
+      {
+        method: "OPTIONS",
+      }
+    )
+      .then((res) => console.log(res))
+      .catch(console.error);
+
+    fetch(
       "https://script.google.com/macros/s/AKfycbwX90N44Phk_kGdfZlysPVeq-2ObszIs1Y88wWtPYQ7i10AbmSbgUiwZf7TZLPDkE7e/exec"
     )
       .then((res) => res.json())
