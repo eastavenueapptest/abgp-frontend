@@ -15,7 +15,7 @@ const LoginPage = () => {
     const formData = new FormData();
     formData.append("username", input.username);
     fetch(
-      "https://script.google.com/macros/s/AKfycbwX90N44Phk_kGdfZlysPVeq-2ObszIs1Y88wWtPYQ7i10AbmSbgUiwZf7TZLPDkE7e/exec",
+      "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
       {
         method: "POST",
         body: formData,
@@ -43,7 +43,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     fetch(
-      "https://script.google.com/macros/s/AKfycbwX90N44Phk_kGdfZlysPVeq-2ObszIs1Y88wWtPYQ7i10AbmSbgUiwZf7TZLPDkE7e/exec"
+      "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec"
     )
       .then((res) => res.json())
       .then((data) => {
