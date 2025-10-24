@@ -50,6 +50,9 @@ const SimpleForm = ({ onSubmit, items, title, isLoading, returnTo }) => {
               onChange={(e) => handleChange(index, e.target.value)}
             />
           )}
+          {item.errorMessage && (
+            <small className="text-danger">{item.errorMessage}</small>
+          )}
         </div>
       ))}
       <div className="col-12 p-0">

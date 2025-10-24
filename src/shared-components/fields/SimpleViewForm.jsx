@@ -86,6 +86,9 @@ const SimpleForm = ({
               loading={field.loading}
             />
           ) : null}
+          {field.errorMessage && (
+            <small className="text-danger">{field.errorMessage}</small>
+          )}
         </div>
       ))}
 

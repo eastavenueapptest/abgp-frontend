@@ -19,13 +19,15 @@ const useEditUser = () => {
         body: JSON.stringify(updateData),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to update Users");
-      }
-
       const result = await response.json();
-      setData(result);
+
+      if (!response.ok) {
+        setError(result);
+        toast.warning(result?.message ?? "Failed to create User");
+        return;
+      }
       toast.success("Record Successfully updated");
+      setData(result);
     } catch (err) {
       setError(err.message);
       toast.warning("Record Failed to update");

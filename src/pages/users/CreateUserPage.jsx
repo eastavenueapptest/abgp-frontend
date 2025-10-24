@@ -8,17 +8,43 @@ const CreateUsertPage = () => {
   const { data: session } = useGetSession();
   const [input, setInput] = useState(null);
   const { data: positions, isLoading: isPositionLoading } = useGetPositions();
-  const { isLoading: isUsersLoading } = useCreateUser(input);
+  const { isLoading: isUsersLoading, error } = useCreateUser(input);
   const items = [
-    { textLabel: "Employee Name", type: "text", name: "employeeName" },
-    { textLabel: "Employee Number", type: "number", name: "employeeNumber" },
-    { textLabel: "Email Address", type: "email", name: "emailAddress" },
-    { textLabel: "Username", type: "text", name: "username" },
-    { textLabel: "Password", type: "password", name: "password" },
+    {
+      textLabel: "Employee Name",
+      type: "text",
+      name: "employeeName",
+      errorMessage: error?.errorFields?.employeeName,
+    },
+    {
+      textLabel: "Employee Number",
+      type: "number",
+      name: "employeeNumber",
+      errorMessage: error?.errorFields?.employeeNumber,
+    },
+    {
+      textLabel: "Email Address",
+      type: "email",
+      name: "emailAddress",
+      errorMessage: error?.errorFields?.emailAddress,
+    },
+    {
+      textLabel: "Username",
+      type: "text",
+      name: "username",
+      errorMessage: error?.errorFields?.username,
+    },
+    {
+      textLabel: "Password",
+      type: "password",
+      name: "password",
+      errorMessage: error?.errorFields?.password,
+    },
     {
       textLabel: "Role",
       type: "dropdown",
       name: "positionId",
+      errorMessage: error?.errorFields?.positionId,
       options: positions?.map(({ id, type }) => ({
         id,
         label: type,

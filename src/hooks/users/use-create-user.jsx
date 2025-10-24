@@ -13,11 +13,13 @@ const useCreateUser = (requestBody) => {
     const createRequest = async () => {
       try {
         setIsLoading(true);
+
         const formattedData = JSON.stringify(
           Array.isArray(requestBody)
             ? Object.assign({}, ...requestBody)
             : requestBody
         );
+
         const response = await fetch(`${server}/api/users`, {
           method: "POST",
           headers: {
@@ -26,17 +28,21 @@ const useCreateUser = (requestBody) => {
           body: formattedData,
         });
 
+        const result = await response.json();
+
         if (!response.ok) {
-          throw new Error("Failed to create User");
+          setError(result);
+          toast.warning(result?.message ?? "Failed to create User");
+          return;
         }
 
-        const result = await response.json();
-        toast.success("Record Successfully created");
+        toast.success("Record successfully created");
         setData(result);
         navigate("/users");
-      } catch (error) {
-        setError(error.message);
-        toast.warning("Record Failed to create");
+      } catch (err) {
+        console.error("Error creating user:", err);
+        setError(err.message);
+        toast.error("Record failed to create");
       } finally {
         setIsLoading(false);
       }
