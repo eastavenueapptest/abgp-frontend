@@ -14,17 +14,17 @@ const LoginPage = () => {
   const handleForgotPassword = async () => {
     const formData = new FormData();
     formData.append("username", input.username);
-    fetch(
-      "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
-      {
-        method: "POST",
-        body: formData,
-      }
-    )
-      .then((res) => res.json())
-      .then(console.log)
-      .catch(console.error);
-  };
+  //   fetch(
+  //     "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
+  //     {
+  //       method: "POST",
+  //       body: formData,
+  //     }
+  //   )
+  //     .then((res) => res.json())
+  //     .then(console.log)
+  //     .catch(console.error);
+  // };
 
   const handleSubmit = (value) => {
     const newValue = value?.map((item) => {
