@@ -143,7 +143,7 @@ export default function SimpleTable({
   enableCreateFunction = false,
   enableUpdatePasswordFunction = false, // Update-Password
 }) {
-  const [order, setOrder] = useState("asc");
+  const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState(columns[0]?.id || "");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -152,8 +152,8 @@ export default function SimpleTable({
   const navigate = useNavigate();
 
   const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
+    const isAsc = orderBy === property && order === "desc";
+    setOrder(isAsc ? "asc" : "desc");
     setOrderBy(property);
   };
 
