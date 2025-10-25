@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import bg from "../../assets/images/background/bg.png";
 import useLoginUser from "../../hooks/auth/use-login-user";
@@ -40,17 +40,6 @@ const LoginPage = () => {
     { textLabel: "Username", type: "text", name: "username" },
     { textLabel: "Password", type: "password", name: "password" },
   ];
-
-  useEffect(() => {
-    fetch(
-      "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec"
-    )
-      .then((res) => res.json())
-      .then((data) => {
-        console.log("User data:", data);
-      })
-      .catch((err) => console.error("Error:", err));
-  }, []);
 
   return (
     <>
