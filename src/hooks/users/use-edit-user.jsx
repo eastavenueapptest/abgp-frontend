@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 const useEditUser = () => {
@@ -6,7 +7,7 @@ const useEditUser = () => {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
   const editUser = async (userId, updateData) => {
     try {
       setIsLoading(true);
@@ -26,8 +27,13 @@ const useEditUser = () => {
         toast.warning(result?.message ?? "Failed to create User");
         return;
       }
+
       toast.success("Record Successfully updated");
       setData(result);
+
+      setTimeout(() => {
+        navigate("/users");
+      }, [2000]);
     } catch (err) {
       setError(err.message);
       toast.warning("Record Failed to update");
