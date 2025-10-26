@@ -172,7 +172,7 @@ const App = () => {
       <Route path="/" element={<Navigate to="/abgp-frontend" replace />} />
 
       <Route
-        path="/login"
+        path="/abgp-frontend"
         element={
           <ThemeProvider theme={SystemThemes}>
             <LoginPage />
