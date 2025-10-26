@@ -169,7 +169,7 @@ const App = () => {
           />
         </Route>
       </Route>
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/abgp-frontend" replace />} />
 
       <Route
         path="/login"
