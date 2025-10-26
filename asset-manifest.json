@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/abgp-frontend/static/css/main.8d884ffd.css",
-    "main.js": "/abgp-frontend/static/js/main.dd8bdb29.js",
-    "static/js/453.63c4db86.chunk.js": "/abgp-frontend/static/js/453.63c4db86.chunk.js",
-    "static/media/bg.png": "/abgp-frontend/static/media/bg.093d6df716031ea588fe.png",
-    "static/media/dohLogo.png": "/abgp-frontend/static/media/dohLogo.04eefbd93d85b4d9056f.png",
-    "static/media/bg-error404.jpg": "/abgp-frontend/static/media/bg-error404.291e8c7e2f13bd36e48f.jpg",
-    "static/media/eastAveLogo.png": "/abgp-frontend/static/media/eastAveLogo.e27554f1147a7c5fc1a0.png",
-    "static/media/lock.jpg": "/abgp-frontend/static/media/lock.6fc6940c46097a5105b9.jpg",
-    "index.html": "/abgp-frontend/index.html",
-    "main.8d884ffd.css.map": "/abgp-frontend/static/css/main.8d884ffd.css.map",
-    "main.dd8bdb29.js.map": "/abgp-frontend/static/js/main.dd8bdb29.js.map",
-    "453.63c4db86.chunk.js.map": "/abgp-frontend/static/js/453.63c4db86.chunk.js.map"
+    "main.css": "/login/static/css/main.8d884ffd.css",
+    "main.js": "/login/static/js/main.4da51087.js",
+    "static/js/453.63c4db86.chunk.js": "/login/static/js/453.63c4db86.chunk.js",
+    "static/media/bg.png": "/login/static/media/bg.093d6df716031ea588fe.png",
+    "static/media/dohLogo.png": "/login/static/media/dohLogo.04eefbd93d85b4d9056f.png",
+    "static/media/bg-error404.jpg": "/login/static/media/bg-error404.291e8c7e2f13bd36e48f.jpg",
+    "static/media/eastAveLogo.png": "/login/static/media/eastAveLogo.e27554f1147a7c5fc1a0.png",
+    "static/media/lock.jpg": "/login/static/media/lock.6fc6940c46097a5105b9.jpg",
+    "index.html": "/login/index.html",
+    "main.8d884ffd.css.map": "/login/static/css/main.8d884ffd.css.map",
+    "main.4da51087.js.map": "/login/static/js/main.4da51087.js.map",
+    "453.63c4db86.chunk.js.map": "/login/static/js/453.63c4db86.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8d884ffd.css",
-    "static/js/main.dd8bdb29.js"
+    "static/js/main.4da51087.js"
   ]
 }
