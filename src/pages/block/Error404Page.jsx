@@ -44,9 +44,9 @@ const Error404Page = () => {
         >
           The page you’re looking for doesn’t exist or you don’t have permission
           to view it.{" "}
-          {displayLink && (
+          {!displayLink && (
             <>
-              Go back to login <NavLink to={"/login"} />
+              Go back to <NavLink to={"/login"}> login</NavLink>
             </>
           )}
         </span>
