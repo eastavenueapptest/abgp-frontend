@@ -1,7 +1,17 @@
-import React from "react";
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import bgImage from "../../assets/images/background/bg-error404.jpg";
+import { useAuthContext } from "../../hooks/context/AuthContext";
 
 const Error404Page = () => {
+  const [displayLink, setDisplayLink] = useState(false);
+  const { user: session, isSessionLoading } = useAuthContext();
+
+  useEffect(() => {
+    if (!session) {
+      setDisplayLink(true);
+    }
+  }, [session]);
   return (
     <div
       style={{
@@ -16,7 +26,8 @@ const Error404Page = () => {
         backgroundRepeat: "no-repeat",
         textAlign: "center",
         padding: "0 20px", // for small screens
-      }}>
+      }}
+    >
       <div>
         <span
           style={{
@@ -29,9 +40,15 @@ const Error404Page = () => {
             color: "black",
             marginTop: "15rem",
             wordBreak: "break-word",
-          }}>
+          }}
+        >
           The page you’re looking for doesn’t exist or you don’t have permission
-          to view it.
+          to view it.{" "}
+          {displayLink && (
+            <>
+              Go back to login <NavLink to={"/login"} />
+            </>
+          )}
         </span>
       </div>
     </div>
