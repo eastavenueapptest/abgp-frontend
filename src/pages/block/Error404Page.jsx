@@ -5,7 +5,7 @@ import { useAuthContext } from "../../hooks/context/AuthContext";
 
 const Error404Page = () => {
   const [displayLink, setDisplayLink] = useState(false);
-  const { user: session, isSessionLoading } = useAuthContext();
+  const { user: session } = useAuthContext();
 
   useEffect(() => {
     if (!session) {
