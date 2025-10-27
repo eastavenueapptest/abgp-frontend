@@ -42,7 +42,6 @@ const ResetPage = () => {
             <div className="col-4 d-flex justify-content-center justify-content-lg-end align-items-center">
               <div className=" p-5 border rounded-4 shadow-sm bg-white">
                 <SimpleForm
-                  title={<div className="bg-light border p-3">{key}</div>}
                   items={items}
                   isLoading={isLoading}
                   onSubmit={handleSubmit}
