@@ -19,11 +19,8 @@ const LoginPage = () => {
       .then((res) => res.json())
       .catch(console.error);
 
-    console.log(generateKeyResult);
-
-    if (generateKeyResult?.key && generateKeyResult?.username) {
+    if (generateKeyResult?.username) {
       formData.append("username", generateKeyResult.username);
-      formData.append("key", generateKeyResult.key);
 
       fetch(
         "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
