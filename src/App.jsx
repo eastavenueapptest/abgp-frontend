@@ -171,18 +171,18 @@ const App = () => {
       </Route>
 
       <Route
-        path="/"
-        element={
-          <ThemeProvider theme={SystemThemes}>
-            <LoginPage />
-          </ThemeProvider>
-        }
-      />
-      <Route
         path="/setup-new-password"
         element={
           <ThemeProvider theme={SystemThemes}>
             <ResetPage />
+          </ThemeProvider>
+        }
+      />
+      <Route
+        path="/"
+        element={
+          <ThemeProvider theme={SystemThemes}>
+            <LoginPage />
           </ThemeProvider>
         }
       />
