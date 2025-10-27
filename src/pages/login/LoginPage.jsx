@@ -8,22 +8,32 @@ import "../../styles/login-styles.css";
 
 const LoginPage = () => {
   const [input, setInput] = useState(null);
-
   const { isLoading: isLoginLoading, error } = useLoginUser(input);
 
   const handleForgotPassword = async () => {
     const formData = new FormData();
-    formData.append("username", input.username);
-    fetch(
-      "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
-      {
-        method: "POST",
-        body: formData,
-      }
+    const generateKeyResult = fetch(
+      `https://abg-backend.onrender.com/api/users/generate-secret-key/${input.username}`
     )
       .then((res) => res.json())
       .then(console.log)
       .catch(console.error);
+    console.log(generateKeyResult);
+
+    if (generateKeyResult?.key && generateKeyResult?.username) {
+      formData.append("username", generateKeyResult?.key);
+      formData.append("key", generateKeyResult?.username);
+      fetch(
+        "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
+        {
+          method: "POST",
+          body: formData,
+        }
+      )
+        .then((res) => res.json())
+        .then(console.log)
+        .catch(console.error);
+    }
   };
 
   const handleSubmit = (value) => {
