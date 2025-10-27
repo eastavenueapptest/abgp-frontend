@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/abgp-frontend/static/css/main.8d884ffd.css",
-    "main.js": "/abgp-frontend/static/js/main.43b5f8bf.js",
+    "main.js": "/abgp-frontend/static/js/main.ead04584.js",
     "static/js/453.63c4db86.chunk.js": "/abgp-frontend/static/js/453.63c4db86.chunk.js",
     "static/media/bg.png": "/abgp-frontend/static/media/bg.093d6df716031ea588fe.png",
     "static/media/dohLogo.png": "/abgp-frontend/static/media/dohLogo.04eefbd93d85b4d9056f.png",
@@ -10,11 +10,11 @@
     "static/media/lock.jpg": "/abgp-frontend/static/media/lock.6fc6940c46097a5105b9.jpg",
     "index.html": "/abgp-frontend/index.html",
     "main.8d884ffd.css.map": "/abgp-frontend/static/css/main.8d884ffd.css.map",
-    "main.43b5f8bf.js.map": "/abgp-frontend/static/js/main.43b5f8bf.js.map",
+    "main.ead04584.js.map": "/abgp-frontend/static/js/main.ead04584.js.map",
     "453.63c4db86.chunk.js.map": "/abgp-frontend/static/js/453.63c4db86.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.8d884ffd.css",
-    "static/js/main.43b5f8bf.js"
+    "static/js/main.ead04584.js"
   ]
 }
