@@ -1,4 +1,3 @@
-import { useSearchParams } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import bg from "../../assets/images/background/lock.jpg";
 import useResetpasswordKey from "../../hooks/auth/use-reset-password-via-secret-key";
@@ -6,23 +5,18 @@ import SimpleForm from "../../shared-components/fields/SimpleForm";
 import "../../styles/login-styles.css";
 
 const ResetPage = () => {
-  const [searchParams] = useSearchParams();
-  const key = searchParams.get("key");
   const { resetPassword, isLoading, error } = useResetpasswordKey();
 
   const handleSubmit = (value) => {
     const newValue = value?.map((item) => {
       return { [item.label]: item.value };
     });
-    const finalData = {
-      ...newValue.reduce((acc, item) => ({ ...acc, ...item })),
-      secretkey: key,
-    };
 
-    resetPassword(finalData);
+    resetPassword(newValue);
   };
 
   const items = [
+    { textLabel: "Secret Key", type: "text", name: "key" },
     { textLabel: "New Password", type: "password", name: "password" },
   ];
 
