@@ -46,7 +46,7 @@ const Error404Page = () => {
           to view it.{" "}
           {!displayLink && (
             <>
-              Go back to <NavLink to={"/login"}> login</NavLink>
+              Go back to <NavLink to={"/"}> login</NavLink>
             </>
           )}
         </span>
