@@ -12,17 +12,19 @@ const LoginPage = () => {
 
   const handleForgotPassword = async () => {
     const formData = new FormData();
-    const generateKeyResult = fetch(
+
+    const generateKeyResult = await fetch(
       `https://abg-backend.onrender.com/api/users/generate-secret-key/${input.username}`
     )
       .then((res) => res.json())
-      .then(console.log)
       .catch(console.error);
+
     console.log(generateKeyResult);
 
     if (generateKeyResult?.key && generateKeyResult?.username) {
-      formData.append("username", generateKeyResult?.username);
-      formData.append("key", generateKeyResult?.key);
+      formData.append("username", generateKeyResult.username);
+      formData.append("key", generateKeyResult.key);
+
       fetch(
         "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
         {
