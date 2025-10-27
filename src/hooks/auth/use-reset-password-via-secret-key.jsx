@@ -41,7 +41,7 @@ export const useResetpasswordKey = () => {
       await refresh();
 
       setTimeout(() => {
-        navigate("/login");
+        navigate("/");
       }, 2000);
     } catch (error) {
       setError(error.message);
