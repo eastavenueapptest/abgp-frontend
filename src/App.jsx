@@ -3,7 +3,7 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import DescriptionIcon from "@mui/icons-material/Description";
 import LayersIcon from "@mui/icons-material/Layers";
 import { useEffect, useMemo, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import MainLayout from "./layouts/MainLayout";
 import OverviewPage from "./pages/dashboard/OverviewPage";
@@ -169,10 +169,9 @@ const App = () => {
           />
         </Route>
       </Route>
-      <Route path="/" element={<Navigate to="/abgp-frontend" replace />} />
 
       <Route
-        path="/abgp-frontend"
+        path="/"
         element={
           <ThemeProvider theme={SystemThemes}>
             <LoginPage />
