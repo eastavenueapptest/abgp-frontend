@@ -19,9 +19,8 @@ const LoginPage = () => {
       .then((res) => res.json())
       .catch(console.error);
 
-    if (generateKeyResult?.username) {
-      formData.append("username", generateKeyResult.username);
-
+    if (generateKeyResult?.success == true) {
+      formData.append("username", input.username);
       fetch(
         "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
         {
@@ -32,6 +31,8 @@ const LoginPage = () => {
         .then((res) => res.json())
         .then(console.log)
         .catch(console.error);
+    } else {
+      throw new Error("No user found");
     }
   };
 
