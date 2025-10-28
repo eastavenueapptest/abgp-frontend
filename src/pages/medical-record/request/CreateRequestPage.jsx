@@ -8,7 +8,7 @@ const CreateRequestPage = () => {
   const { data: session } = useGetSession();
   const [input, setInput] = useState(null);
   const { isLoading: isRequestLoading, error } = useCreateMedicalRequest(input);
-
+  console.log("x", error);
   const { data: doctors, isLoading: isDoctorListsLoading } =
     useGetPhysicianDoctor();
   const items = [
