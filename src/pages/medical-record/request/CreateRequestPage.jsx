@@ -7,7 +7,7 @@ import SimpleForm from "../../../shared-components/fields/SimpleForm";
 const CreateRequestPage = () => {
   const { data: session } = useGetSession();
   const [input, setInput] = useState(null);
-  const { isLoading: isRequestLoading } = useCreateMedicalRequest(input);
+  const { isLoading: isRequestLoading, error } = useCreateMedicalRequest(input);
 
   const { data: doctors, isLoading: isDoctorListsLoading } =
     useGetPhysicianDoctor();
