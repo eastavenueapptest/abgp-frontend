@@ -31,7 +31,7 @@ export const useLogoutUser = () => {
 
       setTimeout(() => {
         localStorage.removeItem("user");
-        navigate("/login");
+        navigate("/");
       }, 3000);
     } catch (error) {
       setError(error.message);
