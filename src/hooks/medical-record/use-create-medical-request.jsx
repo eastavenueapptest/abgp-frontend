@@ -10,6 +10,21 @@ const useCreateMedicalRequest = (requestBody) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const handleForgotPassword = async () => {
+      const formData = new FormData();
+
+      const generateKeyResult = await fetch(
+        `https://abg-backend.onrender.com/api/users/generate-secret-key/${input.username}`
+      )
+        .then((res) => res.json())
+        .catch(console.error);
+
+      if (generateKeyResult?.success == true) {
+        formData.append("username", input.username);
+      } else {
+        throw new Error("No user found");
+      }
+    };
     const createRequest = async () => {
       try {
         setIsLoading(true);
@@ -29,6 +44,20 @@ const useCreateMedicalRequest = (requestBody) => {
         if (!response.ok) {
           throw new Error("Failed to create Medical Request");
         }
+
+        formData.append("username", formattedData.username);
+        const formData = new FormData();
+
+        fetch(
+          "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
+          {
+            method: "POST",
+            body: formData,
+          }
+        )
+          .then((res) => res.json())
+          .then(console.log)
+          .catch(console.error);
 
         const result = await response.json();
         toast.success("Record Successfully created");
