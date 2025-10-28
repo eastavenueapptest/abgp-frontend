@@ -32,7 +32,6 @@ const SimpleForm = ({ onSubmit, items, title, isLoading, returnTo }) => {
             <SimpleAutoCompleteInput
               data={item.options}
               label={item.textLabel}
-              maxLength={50}
               value={formData[index]}
               onChange={(event, newValue) => handleChange(index, newValue)}
               getOptionLabel={(option) => option?.label || ""}

@@ -12,30 +12,62 @@ const CreateRequestPage = () => {
   const { data: doctors, isLoading: isDoctorListsLoading } =
     useGetPhysicianDoctor();
   const items = [
-    { textLabel: "Patient Name", type: "text", name: "patientName" },
-    { textLabel: "Age", type: "number", name: "age" },
+    {
+      textLabel: "Patient Name",
+      type: "text",
+      name: "patientName",
+      errorMessage: error?.errorFields?.patientName,
+      maxLength: 50,
+    },
+    {
+      textLabel: "Age",
+      type: "number",
+      name: "age",
+      errorMessage: error?.errorFields?.age,
+      maxLength: 3,
+    },
     {
       textLabel: "Sex",
       type: "dropdown",
       name: "sex",
+      errorMessage: error?.errorFields?.sex,
       options: [
         { id: 1, label: "Male", value: "M" },
         { id: 2, label: "Female", value: "F" },
       ],
     },
-    { textLabel: "Diagnosis", type: "text", name: "diagnosis", maxLength: 20 },
+    {
+      textLabel: "Diagnosis",
+      type: "text",
+      name: "diagnosis",
+      errorMessage: error?.errorFields?.diagnosis,
+      maxLength: 50,
+    },
     {
       textLabel: "Assign Physician",
       type: "dropdown",
       name: "physician",
+      errorMessage: error?.errorFields?.physician,
       options: doctors?.map(({ id, employee_name }) => ({
         id,
         label: employee_name,
         value: id,
       })),
     },
-    { textLabel: "Ward", type: "text", name: "ward" },
-    { textLabel: "Fio2 Route", type: "text", name: "fio2Route" },
+    {
+      textLabel: "Ward",
+      type: "text",
+      name: "ward",
+      errorMessage: error?.errorFields?.ward,
+      maxLength: 50,
+    },
+    {
+      textLabel: "Fio2 Route",
+      type: "text",
+      name: "fio2Route",
+      errorMessage: error?.errorFields?.fio2Route,
+      maxLength: 50,
+    },
   ];
 
   const handleSubmit = (value) => {
