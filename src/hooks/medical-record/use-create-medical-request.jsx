@@ -37,7 +37,7 @@ const useCreateMedicalRequest = (requestBody) => {
         formData.append("patientName", formattedData.patientName);
 
         fetch(
-          "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
+          "https://script.google.com/macros/s/AKfycby75PN5plrzEH9Wh0Mje-SPwl4TDKqjzvDuU1fq5epw70fASX5DJCLCli4cd_oUTA8w/exec",
           {
             method: "POST",
             body: formData,
