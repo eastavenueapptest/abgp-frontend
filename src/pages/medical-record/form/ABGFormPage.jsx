@@ -148,7 +148,19 @@ const ABGFormPage = () => {
   };
 
   const handleSendEmail = () => {
-    sendEmail({ id: selectedResultId });
+    const formData = new FormData();
+
+    formData.append("patientName", specificResultQuery?.patient_name);
+    fetch(
+      "https://script.google.com/macros/s/AKfycbz5TnR6kLY6hirCoWZLtS6GJZ6-pEBhY0ijwJeCJrkr3LDFF88KmHu2VNnZiChHPYSs/exec",
+      {
+        method: "POST",
+        body: formData,
+      }
+    )
+      .then((res) => res.json())
+      .then(console.log)
+      .catch(console.error);
   };
 
   const handleUpdateInterpretation = (formData) => {
@@ -167,7 +179,6 @@ const ABGFormPage = () => {
     return <div>Loading...</div>;
   }
 
-  console.log(specificResultQuery);
   return (
     <div className="row">
       <div className="col-lg-4 col-md-4 col-sm-12 col-12">
