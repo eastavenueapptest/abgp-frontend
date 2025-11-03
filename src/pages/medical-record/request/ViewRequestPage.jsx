@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
+import useGetSession from "../../../hooks/auth/use-session-user";
 import useDeleteRequest from "../../../hooks/medical-record/use-delete-medical-request";
 import useEditMedicalRequest from "../../../hooks/medical-record/use-edit-medical-request";
 import useGetMedicalRequest from "../../../hooks/medical-record/use-get-medical-request";
@@ -8,6 +9,7 @@ import { formatActiveStatus } from "../../../utils/formatActiveStatus";
 import { formatStatus } from "../../../utils/formatStatus";
 
 const ViewRequestPage = () => {
+  const { data: session } = useGetSession();
   const { id } = useParams();
   const navigate = useNavigate();
   const { data: physicians } = useGetPhysicianDoctor();
@@ -21,7 +23,7 @@ const ViewRequestPage = () => {
 
   const { data: medReq, isLoading: isGetRequestLoading } =
     useGetMedicalRequest(id);
-  medReq?.map(
+  const formattedRequest = medReq?.map(
     ({
       patient_name,
       age,
@@ -33,24 +35,26 @@ const ViewRequestPage = () => {
       is_deleted,
       ward,
     }) => ({
-      patient_name,
+      patientName: patient_name,
       age,
       sex,
       diagnosis,
-      physician_id,
-      fio2_route,
+      physician: physician_id,
+      fio2Route: fio2_route,
       status,
       is_deleted,
       ward,
     })
   );
 
-  const currentRequest = medReq?.[0];
+  const currentRequest = formattedRequest?.[0];
+  console.log(currentRequest);
   const sexOptions = [
     { id: 1, label: "Male", value: "M" },
     { id: 2, label: "Female", value: "F" },
   ];
   const handleSubmit = (formData) => {
+    formData.requestor = session?.user?.id;
     editRequest(id, formData);
   };
   const handleDelete = () => {
@@ -69,7 +73,7 @@ const ViewRequestPage = () => {
 
   const items = [
     {
-      name: "patient_name",
+      name: "patientName",
       label: "Patient Name",
       type: "text",
       errorMessage: error?.errorFields?.patientName,
@@ -94,7 +98,7 @@ const ViewRequestPage = () => {
       errorMessage: error?.errorFields?.sex,
     },
     {
-      name: "physician_id",
+      name: "physician",
       label: "Assigned Physician Doctor",
       type: "autocomplete",
       options: physicianOptions,
@@ -108,7 +112,7 @@ const ViewRequestPage = () => {
       errorMessage: error?.errorFields?.ward,
     },
     {
-      name: "fio2_route",
+      name: "fio2Route",
       label: "Fio2 Route",
       type: "text",
       errorMessage: error?.errorFields?.fio2Route,
@@ -126,7 +130,7 @@ const ViewRequestPage = () => {
                 {formatActiveStatus(currentRequest?.is_deleted)}
               </div>
             }
-            items={medReq}
+            items={formattedRequest}
             onSubmit={handleSubmit}
             onDelete={
               currentRequest?.is_deleted === 0 && currentRequest?.status === 1

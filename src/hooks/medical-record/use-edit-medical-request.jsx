@@ -28,7 +28,7 @@ const useEditMedicalRequest = () => {
 
       if (!response.ok) {
         setError(result);
-        toast.warning(result?.message ?? "Failed to create User");
+        toast.warning(result?.message ?? "Failed to create Medical Request");
         return;
       }
       toast.success("Record Successfully updated");
