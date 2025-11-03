@@ -80,7 +80,7 @@ const ViewRequestPage = () => {
       type: "autocomplete",
       options: physicianOptions,
     },
-    { textLabel: "Ward", type: "text", name: "ward" },
+    { textLabel: "Ward", label: "Ward", type: "text", name: "ward" },
     { name: "fio2_route", label: "Fio2 Route", type: "text" },
   ];
 
