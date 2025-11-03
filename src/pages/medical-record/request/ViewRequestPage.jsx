@@ -13,8 +13,11 @@ const ViewRequestPage = () => {
   const { data: physicians } = useGetPhysicianDoctor();
   const { deleteRequest } = useDeleteRequest(id);
 
-  const { editRequest, isLoading: isEditRequestLoading } =
-    useEditMedicalRequest();
+  const {
+    editRequest,
+    isLoading: isEditRequestLoading,
+    error,
+  } = useEditMedicalRequest();
 
   const { data: medReq, isLoading: isGetRequestLoading } =
     useGetMedicalRequest(id);
