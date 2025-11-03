@@ -68,23 +68,51 @@ const ViewRequestPage = () => {
     })) || [];
 
   const items = [
-    { name: "patient_name", label: "Patient Name", type: "text" },
-    { name: "age", label: "Age", type: "number" },
-    { name: "diagnosis", label: "Diagnosis", type: "text" },
+    {
+      name: "patient_name",
+      label: "Patient Name",
+      type: "text",
+      errorMessage: error?.errorFields?.patientName,
+    },
+    {
+      name: "age",
+      label: "Age",
+      type: "number",
+      errorMessage: error?.errorFields?.age,
+    },
+    {
+      name: "diagnosis",
+      label: "Diagnosis",
+      type: "text",
+      errorMessage: error?.errorFields?.diagnosis,
+    },
     {
       name: "sex",
       label: "Sex",
       type: "autocomplete",
       options: sexOptions,
+      errorMessage: error?.errorFields?.sex,
     },
     {
       name: "physician_id",
       label: "Assigned Physician Doctor",
       type: "autocomplete",
       options: physicianOptions,
+      errorMessage: error?.errorFields?.physician,
     },
-    { textLabel: "Ward", label: "Ward", type: "text", name: "ward" },
-    { name: "fio2_route", label: "Fio2 Route", type: "text" },
+    {
+      textLabel: "Ward",
+      label: "Ward",
+      type: "text",
+      name: "ward",
+      errorMessage: error?.errorFields?.ward,
+    },
+    {
+      name: "fio2_route",
+      label: "Fio2 Route",
+      type: "text",
+      errorMessage: error?.errorFields?.fio2Route,
+    },
   ];
 
   return (
