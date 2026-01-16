@@ -11,6 +11,17 @@ const useChangePassword = () => {
     try {
       setIsLoading(true);
       setError(null);
+
+      const objectData = body;
+      if (objectData.password == "") throw new Error("Fill up missing fields");
+      if (
+        objectData.password &&
+        !/^(?=.*[@._-])[A-Za-z0-9@._-]+$/.test(objectData.password)
+      )
+        throw new Error(
+          "At least one special character required. Allowed: @ - _ ."
+        );
+
       const response = await fetch(
         `${server}/api/users/change-password/${userId}`,
         {

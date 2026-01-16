@@ -2,7 +2,7 @@ import { CssBaseline } from "@mui/material";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout } from "@toolpad/core/DashboardLayout";
 import { PageContainer } from "@toolpad/core/PageContainer";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import logo from "../assets/images/placeholders/image.jpg";
@@ -55,6 +55,21 @@ export default function MainLayout({ modules, ...props }) {
       },
     };
   }, [logout, session]);
+
+  useEffect(() => {
+    if (!session?.user) return;
+
+    const button = document.querySelector('button[aria-label="Current User"]');
+    if (!button) return;
+
+    if (button.querySelector(".user-name-span")) return;
+
+    const span = document.createElement("span");
+    span.textContent = session.user.name;
+    span.className = "user-name-span px-2";
+
+    button.append(span);
+  }, [session]);
 
   return (
     <AppProvider

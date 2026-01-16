@@ -36,7 +36,6 @@ const ViewUserPage = () => {
   const handleSubmit = (formData) => {
     editUser(id, formData);
   };
-  console.log(error?.errorFields);
   const handleDelete = () => {
     deleteUser(id, { is_deleted: true });
     setTimeout(() => {

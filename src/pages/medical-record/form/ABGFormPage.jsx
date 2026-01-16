@@ -1,7 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import moment from "moment";
 import { useEffect, useMemo, useRef, useState } from "react";
-import useCreateEmail from "../../../hooks/email/use-create-email";
 import useEditMedicalResult from "../../../hooks/medical-record/use-edit-medical-result";
 import useEditStatusRequest from "../../../hooks/medical-record/use-edit-status-medical-requests";
 import useGetMedicalResult from "../../../hooks/medical-record/use-get-medical-result";
@@ -24,13 +23,9 @@ const ABGFormPage = () => {
     to: now,
   });
 
-  const adjustedToDate = moment(date.to)
-    .add(1, "seconds")
-    .format("YYYY-MM-DDTHH:mm");
   const [selectedResultId, setSelectedResultId] = useState(null);
   const [fields, setFields] = useState(null);
   const resultFormRef = useRef();
-  const { sendEmail } = useCreateEmail();
   const { editStatusRequest } = useEditStatusRequest();
   const {
     data: resultsQuery,
@@ -38,7 +33,7 @@ const ABGFormPage = () => {
     refetch: refetchMedicalResults,
   } = useGetMedicalResults({
     from: date.from,
-    to: adjustedToDate,
+    to: date.to,
   });
   const { data: userPhysicianQuery, isLoading: isPhysicianDoctorLoading } =
     useGetPhysicianDoctor();
@@ -75,7 +70,7 @@ const ABGFormPage = () => {
   const filteredResults = useMemo(() => {
     if (!selectedPatient?.patient_name) return resultsQuery;
     return resultsQuery?.filter(
-      (e) => e.patient_name === selectedPatient.patient_name
+      (e) => e.patient_name === selectedPatient.patient_name,
     );
   }, [resultsQuery, selectedPatient]);
 
@@ -156,7 +151,7 @@ const ABGFormPage = () => {
       {
         method: "POST",
         body: formData,
-      }
+      },
     )
       .then((res) => res.json())
       .then(console.log)

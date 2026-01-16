@@ -20,7 +20,17 @@ export const useResetpasswordKey = () => {
           ? Object.assign({}, ...requestBody)
           : requestBody
       );
-
+      const objectData = JSON.parse(formattedData);
+      if (objectData.key == "" || objectData.password == "")
+        throw new Error("Fill up missing fields");
+      if (
+        objectData.password &&
+        !/^(?=.*[@._-])[A-Za-z0-9@._-]+$/.test(objectData.password)
+      )
+        throw new Error(
+          "At least one special character required. Allowed: @ - _ ."
+        );
+      console.log("test");
       const response = await fetch(`${server}/api/users/setup-new-password`, {
         method: "POST",
         credentials: "include",
@@ -29,7 +39,7 @@ export const useResetpasswordKey = () => {
         },
         body: formattedData,
       });
-
+      console.log(formattedData);
       if (!response.ok) {
         throw new Error("Failed to reset password");
       }

@@ -39,11 +39,7 @@ const UpdatePasswordPage = () => {
   }
   const handleSubmit = async () => {
     try {
-      console.log(selectedId, newPassword);
       await changePassword(selectedId, { password: newPassword });
-      if (cpError) {
-        console.error(`Error: ${cpError}`);
-      }
     } catch (error) {
       console.error(error);
     }
@@ -78,6 +74,7 @@ const UpdatePasswordPage = () => {
             </Select>
 
             <TextField
+              key="outlined-basic"
               id="outlined-basic"
               label="New password"
               variant="outlined"
@@ -86,7 +83,8 @@ const UpdatePasswordPage = () => {
               onChange={handleNewPassword}
             />
             <TextField
-              id="outlined-basic"
+              key="outlined-basic-2"
+              id="outlined-basic-2"
               label="Re-type your new password"
               variant="outlined"
               type="password"
@@ -112,6 +110,7 @@ const UpdatePasswordPage = () => {
                 {cpIsLoading ? "Loading ..." : "Submit"}
               </Button>
             </div>
+            <span>{cpError}</span>
           </FormControl>
         </div>
       </div>

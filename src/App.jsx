@@ -45,7 +45,7 @@ const App = () => {
           { segment: "request", title: "Request", icon: <DescriptionIcon /> },
           {
             segment: "scanned-result",
-            title: "Scanned Result",
+            title: "Scan Result",
             icon: <DescriptionIcon />,
           },
           { segment: "abg-form", title: "ABG Form", icon: <DescriptionIcon /> },

@@ -16,7 +16,7 @@ const UsersPage = () => {
     is_deleted: formatActiveStatus(is_deleted),
     ...rest,
   }));
-  console.log(rows);
+
   return (
     <div className="container">
       <div className="row  ">

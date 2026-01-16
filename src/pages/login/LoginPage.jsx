@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import { useState } from "react";
 import { ToastContainer } from "react-toastify";
 import bg from "../../assets/images/background/bg.png";
@@ -8,33 +7,8 @@ import "../../styles/login-styles.css";
 
 const LoginPage = () => {
   const [input, setInput] = useState(null);
+
   const { isLoading: isLoginLoading, error } = useLoginUser(input);
-
-  const handleForgotPassword = async () => {
-    const formData = new FormData();
-
-    const generateKeyResult = await fetch(
-      `https://abg-backend.onrender.com/api/users/generate-secret-key/${input.username}`
-    )
-      .then((res) => res.json())
-      .catch(console.error);
-
-    if (generateKeyResult?.success == true) {
-      formData.append("username", input.username);
-      fetch(
-        "https://script.google.com/macros/s/AKfycbz49BTqBw4hmCZUnLF4leWj2nUGel4_R7VzXMQ-zusc7Gi02Z1bEgeJKEe8VDxocbtf/exec",
-        {
-          method: "POST",
-          body: formData,
-        }
-      )
-        .then((res) => res.json())
-        .then(console.log)
-        .catch(console.error);
-    } else {
-      throw new Error("No user found");
-    }
-  };
 
   const handleSubmit = (value) => {
     const newValue = value?.map((item) => {
@@ -77,21 +51,13 @@ const LoginPage = () => {
                     title={"Sign in"}
                     items={items}
                     isLoading={isLoginLoading}
+                    collectedData={(x) => console.log(x)}
                     onSubmit={(formData) => handleSubmit(formData)}
+                    isLogin={true}
                   />
-                  <small>{error}</small>
+
+                  {error && <p>{error}</p>}
                 </div>
-                {error && (
-                  <div className="col-6 mt-3">
-                    <Button
-                      sx={{ color: "white" }}
-                      disabled={!input?.username}
-                      onClick={handleForgotPassword}
-                    >
-                      Forgot Password?
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           </div>

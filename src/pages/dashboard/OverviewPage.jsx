@@ -24,33 +24,30 @@ const OverviewPage = () => {
     to: moment(date.to, "YYYY-MM-DDTHH:mm").format("hh:mm A"),
   }));
 
-  const adjustedToDate = moment(date.to)
-    .add(1, "seconds")
-    .format("YYYY-MM-DDTHH:mm");
   const { data: resultsQuery, isLoading: resultIsLoading } =
     useGetMedicalResults({
       from: date.from,
-      to: adjustedToDate,
+      to: date.to,
     });
 
   const filteredResults = useMemo(() => {
     if (!selectedRt?.respiratory_therapists) return resultsQuery;
     return resultsQuery?.filter(
-      (e) => e.respiratory_therapists === selectedRt.respiratory_therapists
+      (e) => e.respiratory_therapists === selectedRt.respiratory_therapists,
     );
   }, [resultsQuery, selectedRt]);
 
   const totalResultCollected = filteredResults?.filter((item) =>
-    [2, 3].includes(item.status)
+    [2, 3].includes(item.status),
   );
 
   const totalForReview = filteredResults?.filter((item) => item.status === 2);
   const totalCompleted = filteredResults?.filter((item) => item.status === 3);
   const totalDetermined = filteredResults?.filter(
-    (item) => item.is_determined === 1
+    (item) => item.is_determined === 1,
   );
   const totalExtracted = filteredResults?.filter(
-    (item) => item.is_determined === 2
+    (item) => item.is_determined === 2,
   );
 
   const rtOnDuty = useMemo(() => {

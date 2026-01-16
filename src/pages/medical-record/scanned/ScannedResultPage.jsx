@@ -35,7 +35,6 @@ const ScannedResultPage = () => {
         patient_name,
       }));
   }, [requests]);
-
   const machineName = useMemo(() => {
     return machines.map(({ id, machine_name }) => ({
       id,
@@ -170,7 +169,13 @@ const ScannedResultPage = () => {
                 sx={{
                   textTransform: "capitalize",
                 }}
-                disabled={isProcessing || !image}
+                disabled={
+                  isProcessing ||
+                  !image ||
+                  !selectedPatient ||
+                  !selectedMachine ||
+                  !selectedValue
+                }
                 onClick={() => handleOCR(image)}
               >
                 {isProcessing ? "Processing..." : "Scan Result"}
@@ -199,6 +204,7 @@ const ScannedResultPage = () => {
               value={selectedMachine}
               onChange={(event, newValue) => setSelectedMachine(newValue)}
               getOptionLabel={(option) => `${option.machine_name}`}
+              disabled={!selectedPatient}
             />
           </div>
           <div className="col-lg-12 p-2">
@@ -210,12 +216,16 @@ const ScannedResultPage = () => {
               >
                 <FormControlLabel
                   value={1}
-                  control={<Radio />}
+                  control={
+                    <Radio disabled={!selectedPatient || !selectedMachine} />
+                  }
                   label="Determined"
                 />
                 <FormControlLabel
                   value={2}
-                  control={<Radio />}
+                  control={
+                    <Radio disabled={!selectedPatient || !selectedMachine} />
+                  }
                   label="Extracted"
                 />
               </RadioGroup>
@@ -224,6 +234,8 @@ const ScannedResultPage = () => {
                 type="button"
                 variant="contained"
                 disabled={
+                  isProcessing ||
+                  !image ||
                   result?.length === 0 ||
                   !selectedPatient?.id ||
                   !selectedMachine?.id ||
